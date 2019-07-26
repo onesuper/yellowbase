@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>yellowbase</artifactId>
-    <version>1.0.6-SNAPSHOT</version>
+    <version>0.1.0-SNAPSHOT</version>
     <groupId>io.iftech.data</groupId>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -13,19 +13,7 @@
         <compile.version>1.8</compile.version>
     </properties>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>aws-snapshots</id>
-            <url>s3://jike-aws-maven/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>aws-releases</id>
-            <url>s3://jike-aws-maven/repositories/releases</url>
-        </repository>
-    </distributionManagement>
-
     <dependencies>
-
         <dependency>
             <groupId>com.google.truth</groupId>
             <artifactId>truth</artifactId>
