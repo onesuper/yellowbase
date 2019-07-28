@@ -1,5 +1,6 @@
 package io.iftech.yellowbase.core.index;
 
+import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
 public final class Term implements Comparable<Term> {
@@ -25,5 +26,23 @@ public final class Term implements Comparable<Term> {
     @Override
     public String toString() {
         return field + ":" + value;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Term term = (Term) o;
+        return Objects.equals(field, term.field) &&
+            Objects.equals(value, term.value);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(field, value);
     }
 }
