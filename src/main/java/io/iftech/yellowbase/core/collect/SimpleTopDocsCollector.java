@@ -7,7 +7,7 @@ public class SimpleTopDocsCollector implements TopDocsCollector {
     private final MinMaxPriorityQueue<ScoreDoc> heap;
     private int totalHits;
 
-    protected SimpleTopDocsCollector() {
+    public SimpleTopDocsCollector() {
         this.heap = MinMaxPriorityQueue.orderedBy(new ScoreDoc.Sorter()).create();
         this.totalHits = 0;
     }
