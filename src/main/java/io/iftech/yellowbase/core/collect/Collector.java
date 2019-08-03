@@ -7,7 +7,8 @@ public interface Collector<DocId> {
      *
      * 例如在一些实现中 Document ID 可以以 BitSet 的形式进行收集
      *
-     * @param docId
+     * @param docId 文档 id
+     * @param score 得分
      */
-    void collect(DocId docId);
+    void collect(DocId docId, float score);
 }

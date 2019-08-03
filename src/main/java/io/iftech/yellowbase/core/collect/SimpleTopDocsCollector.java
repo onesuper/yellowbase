@@ -13,8 +13,8 @@ public class SimpleTopDocsCollector<DocId> implements TopDocsCollector<DocId> {
     }
 
     @Override
-    public void collect(DocId docId) {
-        heap.add(new ScoreDoc<>(docId, 0));
+    public void collect(DocId docId, float score) {
+        heap.add(new ScoreDoc<>(docId, score));
         totalHits++;
     }
 
