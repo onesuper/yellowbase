@@ -1,6 +1,5 @@
 package io.iftech.yellowbase.core;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -21,10 +20,10 @@ public class Executor {
         this.executor = executor;
     }
 
-    public <A, R> List<R> map(Function<A, R> f, Iterable<A> as) {
-        final List<Future<R>> resultFutures = new ArrayList<>();
-        for (A a : as) {
-            FutureTask<R> task = new FutureTask<>(() -> f.apply(a));
+    public <I, R> List<R> map(Function<I, R> f, Iterable<I> is) {
+        final List<Future<R>> resultFutures = new LinkedList<>();
+        for (I i : is) {
+            FutureTask<R> task = new FutureTask<>(() -> f.apply(i));
             resultFutures.add(task);
             executor.execute(task);
         }
