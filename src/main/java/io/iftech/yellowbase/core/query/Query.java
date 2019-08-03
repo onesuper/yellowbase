@@ -7,4 +7,9 @@ public abstract class Query {
      * @param visitor
      */
     public abstract void accept(QueryVisitor visitor);
+
+    /**
+     * 原子 query 实现这个方法，计算权重
+     */
+    public abstract Weight weight();
 }
