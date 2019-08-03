@@ -1,6 +1,6 @@
 package io.iftech.yellowbase.core.collect;
 
-public interface Collector {
+public interface Collector<DocId> {
 
     /**
      * 每次在 document 命中 query 时被调用
@@ -9,5 +9,5 @@ public interface Collector {
      *
      * @param docId
      */
-    void collect(String docId);
+    void collect(DocId docId);
 }

@@ -5,13 +5,13 @@ import com.google.common.base.Objects;
 import java.util.Comparator;
 import org.jetbrains.annotations.NotNull;
 
-public class ScoreDoc implements Comparable<ScoreDoc> {
+public class ScoreDoc<DocId> implements Comparable<ScoreDoc<DocId>> {
 
-    private String docId;
+    private DocId docId;
 
     private float score;
 
-    public ScoreDoc(String docId, float score) {
+    public ScoreDoc(DocId docId, float score) {
         this.docId = docId;
         this.score = score;
     }
@@ -55,11 +55,4 @@ public class ScoreDoc implements Comparable<ScoreDoc> {
         return Objects.hashCode(docId, score);
     }
 
-    @Override
-    public String toString() {
-        return "ScoreDoc{" +
-            "docId='" + docId + '\'' +
-            ", score=" + score +
-            '}';
-    }
 }

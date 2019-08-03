@@ -2,9 +2,9 @@ package io.iftech.yellowbase.core.collect;
 
 import com.google.common.collect.MinMaxPriorityQueue;
 
-public class SimpleTopDocsCollector implements TopDocsCollector {
+public class SimpleTopDocsCollector<DocId> implements TopDocsCollector<DocId> {
 
-    private final MinMaxPriorityQueue<ScoreDoc> heap;
+    private final MinMaxPriorityQueue<ScoreDoc<DocId>> heap;
     private int totalHits;
 
     public SimpleTopDocsCollector() {
@@ -13,8 +13,8 @@ public class SimpleTopDocsCollector implements TopDocsCollector {
     }
 
     @Override
-    public void collect(String docId) {
-        heap.add(new ScoreDoc(docId, 0));
+    public void collect(DocId docId) {
+        heap.add(new ScoreDoc<>(docId, 0));
         totalHits++;
     }
 
