@@ -1,25 +1,50 @@
 package io.iftech.yellowbase.core.docset;
 
-public interface DocSet<DocId> {
+
+public interface DocSet<DocId extends Comparable<DocId>> {
 
     /**
-     * 用来标识移动结果的哨兵字段
-     */
-    int NO_MORE_DOCS= -1;
-
-    /**
-     * 移动到下一个文档
+     * 移动到下一个有效的文档
      *
-     * return {@value #NO_MORE_DOCS} 如果没有文档了
+     * 必须先调用一次 next()，才能得到第一个有效的 docId：
+     *
+     * while(docSet.next()) {
+     *   process(docSet.docId)
+     * }
+     *
+     * @return false 如果没有文档了
      */
-    int next();
+    boolean next();
 
     /**
      * 直接跳到某一个文档后的一个文档
      *
-     * return {@value #NO_MORE_DOCS} 如果没有文档了
+     * 默认实现通过反复调用 {@link #next()} 方法来实现
+     *
+     * 跳表可以通过覆盖该方法实现高性能的查询
+     *
+     * @return false 如果没有文档了
      */
-    int advance(DocId target);
+    default boolean advance(DocId target) {
+
+        if (!this.next()) {
+            return false;
+        }
+
+        while (true) {
+            int val = this.docId().compareTo(target);
+
+            if (val < 0) {
+                if (!this.next()) {
+                    return false;
+                }
+
+            } else {
+                return true;
+            }
+        }
+    }
+
 
     /**
      * 获取当前文档的 DocId

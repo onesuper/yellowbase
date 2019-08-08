@@ -7,22 +7,22 @@ public final class EmptyDocSet implements DocSet<Integer> {
     private boolean exhausted = false;
 
     @Override
-    public int next() {
+    public boolean next() {
         Preconditions.checkArgument(!exhausted);
         exhausted = true;
-        return NO_MORE_DOCS;
+        return false;
     }
 
     @Override
-    public int advance(Integer target) {
+    public boolean advance(Integer target) {
         Preconditions.checkArgument(!exhausted);
         exhausted = true;
-        return NO_MORE_DOCS;
+        return false;
     }
 
     @Override
     public Integer docId() {
-        return exhausted ? NO_MORE_DOCS : -1;
+        return null;
     }
 
     @Override
