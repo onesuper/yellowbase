@@ -11,7 +11,7 @@ public interface Scorer {
 
     default void foreach(BiConsumer<Integer, Float> callback) {
         DocSet<Integer> ds = docSet();
-        while (ds.next() != DocSet.NO_MORE_DOCS) {
+        while (ds.next()) {
             callback.accept(ds.docId(), score());
         }
     }
