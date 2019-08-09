@@ -21,11 +21,34 @@ public class ListDocSet<DocId extends Comparable<DocId>> implements DocSet<DocId
 
     @Override
     public DocId docId() {
+        if (cursor >= docIds.size()) {
+            return null;
+        }
         return docIds.get(cursor);
     }
 
     @Override
     public long size() {
         return docIds.size();
+    }
+
+
+    @Override
+    public String toString() {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < docIds.size(); i++) {
+            if (i == cursor) {
+                sb.append("[");
+            }
+            sb.append(docIds.get(i));
+            if (i == cursor) {
+                sb.append("]");
+            }
+            sb.append(" ");
+        }
+
+        return sb.toString();
     }
 }
