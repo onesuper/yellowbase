@@ -1,6 +1,9 @@
 package io.iftech.yellowbase.core.query;
 
 import io.iftech.yellowbase.core.docset.DocSet;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Intersection<DocId extends Comparable<DocId>> {
 
@@ -10,6 +13,18 @@ public class Intersection<DocId extends Comparable<DocId>> {
     public Intersection(DocSet<DocId> left, DocSet<DocId> right) {
         this.left = left;
         this.right = right;
+    }
+
+    public static <DocId extends Comparable<DocId>> Intersection<DocId> from(
+        Collection<DocSet<DocId>> docSets) {
+        Queue<DocSet<DocId>> queue = new LinkedList<>(docSets);
+        DocSet<DocId> head = queue.poll();
+
+        if (queue.size() == 1) {
+            return new Intersection<>(head, queue.poll());
+        }
+        
+        return new Intersection<>(head, from(queue).docSet());
     }
 
     public DocSet<DocId> docSet() {
