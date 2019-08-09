@@ -1,5 +1,6 @@
 package io.iftech.yellowbase.core.docset;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,5 +33,14 @@ public class ListDocSetTest {
         Truth.assertThat(docSet.docId()).isEqualTo(27);
 
         Truth.assertThat(docSet.advance(44)).isFalse();
+    }
+
+    @Test
+    public void testEmptyListDocSet() {
+        DocSet<Integer> docSet = new ListDocSet<>(ImmutableList.<Integer>of());
+
+        Truth.assertThat(docSet.size()).isEqualTo(0);
+
+        Truth.assertThat(docSet.next()).isFalse();
     }
 }
