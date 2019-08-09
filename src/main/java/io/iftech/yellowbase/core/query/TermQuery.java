@@ -16,6 +16,11 @@ public class TermQuery extends Query {
         visitor.consumeTerms(this, term);
     }
 
+    @Override
+    public Weight weight() {
+        return null;
+    }
+
     public Term getTerm() {
         return term;
     }
