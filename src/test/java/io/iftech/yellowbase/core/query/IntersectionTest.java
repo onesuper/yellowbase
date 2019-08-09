@@ -37,7 +37,7 @@ public class IntersectionTest {
     }
 
     @Test
-    public void intersectionMultipleSets() {
+    public void intersectMultipleSets() {
         DocSet<Integer> first = new ListDocSet<>(ImmutableList.of(2, 3, 6));
         DocSet<Integer> second = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> third = new ListDocSet<>(ImmutableList.of(2, 4, 6, 8));
@@ -91,7 +91,7 @@ public class IntersectionTest {
     }
 
     @Test
-    public void operationIsNotFunctional() {
+    public void intersectIsNotFunctional() {
 
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(3, 6));
