@@ -14,6 +14,8 @@ public class ListDocSetTest {
             .collect(Collectors.toList());
         DocSet<Integer> docSet = new ListDocSet<>(numbers);
 
+        Truth.assertThat(docSet.size()).isEqualTo(10);
+
         Truth.assertThat(docSet.next()).isTrue();
 
         Truth.assertThat(docSet.next()).isTrue();

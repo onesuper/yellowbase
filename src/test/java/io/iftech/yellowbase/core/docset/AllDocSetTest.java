@@ -9,6 +9,7 @@ public class AllDocSetTest {
     public void testAllDocSet() {
         DocSet<Integer> docSet = new AllDocSet(3);
 
+        Truth.assertThat(docSet.size()).isEqualTo(3);
         int i = 0;
 
         while (docSet.next()) {

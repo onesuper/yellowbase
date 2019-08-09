@@ -8,6 +8,7 @@ public class EmptyDocSetTest {
     @Test
     public void testEmptyDocSet() {
         DocSet<Integer> docSet = new EmptyDocSet();
+        Truth.assertThat(docSet.size()).isEqualTo(0);
 
         Truth.assertThat(docSet.next()).isFalse();
     }
