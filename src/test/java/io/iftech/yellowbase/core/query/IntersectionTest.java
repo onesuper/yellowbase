@@ -36,6 +36,22 @@ public class IntersectionTest {
     }
 
     @Test
+    public void multipleSetsIntersect() {
+        DocSet<Integer> first = new ListDocSet<>(ImmutableList.of(2, 3, 6));
+        DocSet<Integer> second = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
+        DocSet<Integer> third = new ListDocSet<>(ImmutableList.of(2, 4, 6, 8));
+
+        DocSet<Integer> intersectionOfTwo = new Intersection<>(first, second).docSet();
+        DocSet<Integer> intersectionOfThree = new Intersection<>(intersectionOfTwo, third).docSet();
+
+        Truth.assertThat(intersectionOfThree.next()).isTrue();
+        Truth.assertThat(intersectionOfThree.docId()).isEqualTo(2);
+        Truth.assertThat(intersectionOfThree.next()).isTrue();
+        Truth.assertThat(intersectionOfThree.docId()).isEqualTo(6);
+        Truth.assertThat(intersectionOfThree.next()).isFalse();
+    }
+
+    @Test
     public void noIntersection() {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(1, 3, 5, 7, 9));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(2, 4, 6, 8, 10));
