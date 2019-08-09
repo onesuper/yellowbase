@@ -4,76 +4,90 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.docset.DocSet;
 import io.iftech.yellowbase.core.docset.ListDocSet;
+import java.util.LinkedList;
+import java.util.List;
 import org.junit.Test;
 
 public class IntersectionTest {
 
     @Test
-    public void bigIntersectSmall() {
+    public void intersectTwoSets1() {
 
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(3, 6));
         DocSet<Integer> intersection = Intersection.of(left, right);
-        Truth.assertThat(intersection.next()).isTrue();
-
-        Truth.assertThat(intersection.docId()).isEqualTo(3);
-        Truth.assertThat(intersection.next()).isTrue();
-        Truth.assertThat(intersection.docId()).isEqualTo(6);
-        Truth.assertThat(intersection.next()).isFalse();
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).containsExactly(3, 6);
     }
 
     @Test
-    public void smallIntersectBig() {
+    public void intersectTwoSets2() {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(3, 6));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> intersection = Intersection.of(left, right);
-        Truth.assertThat(intersection.next()).isTrue();
 
-        Truth.assertThat(intersection.docId()).isEqualTo(3);
-        Truth.assertThat(intersection.next()).isTrue();
-        Truth.assertThat(intersection.docId()).isEqualTo(6);
-        Truth.assertThat(intersection.next()).isFalse();
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).containsExactly(3, 6);
     }
 
     @Test
-    public void multipleSetsIntersect() {
+    public void intersectionMultipleSets() {
         DocSet<Integer> first = new ListDocSet<>(ImmutableList.of(2, 3, 6));
         DocSet<Integer> second = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> third = new ListDocSet<>(ImmutableList.of(2, 4, 6, 8));
 
-        DocSet<Integer> intersectionOfThree = Intersection
-            .of(first, second, third);
+        DocSet<Integer> intersection = Intersection.of(first, second, third);
 
-        Truth.assertThat(intersectionOfThree.next()).isTrue();
-        Truth.assertThat(intersectionOfThree.docId()).isEqualTo(2);
-        Truth.assertThat(intersectionOfThree.next()).isTrue();
-        Truth.assertThat(intersectionOfThree.docId()).isEqualTo(6);
-        Truth.assertThat(intersectionOfThree.next()).isFalse();
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).containsExactly(2, 6);
     }
 
     @Test
-    public void noIntersection() {
+    public void intersectTwoSetsWithNoIntersection() {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(1, 3, 5, 7, 9));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(2, 4, 6, 8, 10));
         DocSet<Integer> intersection = Intersection.of(left, right);
-        Truth.assertThat(intersection.next()).isFalse();
-        Truth.assertThat(intersection.docId()).isNull();
+
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).isEmpty();
     }
 
     @Test
-    public void emptyIntersectBeing() {
+    public void intersectWithEmptySet1() {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.<Integer>of());
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(2, 4, 6));
         DocSet<Integer> intersection = Intersection.of(left, right);
-        Truth.assertThat(intersection.next()).isFalse();
+
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).isEmpty();
     }
 
     @Test
-    public void beingIntersectEmpty() {
+    public void intersectWithEmptySet2() {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(2, 4, 6));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.<Integer>of());
         DocSet<Integer> intersection = Intersection.of(left, right);
-        Truth.assertThat(intersection.next()).isFalse();
+
+        List<Integer> result = new LinkedList<>();
+        while (intersection.next()) {
+            result.add(intersection.docId());
+        }
+        Truth.assertThat(result).isEmpty();
     }
 
     @Test
@@ -82,14 +96,18 @@ public class IntersectionTest {
         DocSet<Integer> left = new ListDocSet<>(ImmutableList.of(1, 2, 3, 4, 5, 6));
         DocSet<Integer> right = new ListDocSet<>(ImmutableList.of(3, 6));
         DocSet<Integer> intersection1 = Intersection.of(left, right);
-        Truth.assertThat(intersection1.next()).isTrue();
 
-        Truth.assertThat(intersection1.docId()).isEqualTo(3);
-        Truth.assertThat(intersection1.next()).isTrue();
-        Truth.assertThat(intersection1.docId()).isEqualTo(6);
-        Truth.assertThat(intersection1.next()).isFalse();
+        List<Integer> result1 = new LinkedList<>();
+        while (intersection1.next()) {
+            result1.add(intersection1.docId());
+        }
+        Truth.assertThat(result1).containsExactly(3, 6);
 
         DocSet<Integer> intersection2 = Intersection.of(left, right);
-        Truth.assertThat(intersection2.next()).isFalse();
+        List<Integer> result2 = new LinkedList<>();
+        while (intersection2.next()) {
+            result2.add(intersection2.docId());
+        }
+        Truth.assertThat(result2).isEmpty();
     }
 }
