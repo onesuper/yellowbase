@@ -7,5 +7,5 @@ public interface Weight {
 
     Scorer scorer();
 
-    DocSet<Integer> docSet(SegmentReader segmentReader);
+    DocSet<Integer> docSetIterator(SegmentReader segmentReader);
 }

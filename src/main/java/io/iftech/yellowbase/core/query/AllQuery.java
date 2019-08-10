@@ -26,7 +26,7 @@ public class AllQuery extends Query {
         }
 
         @Override
-        public DocSet<Integer> docSet(SegmentReader segmentReader) {
+        public DocSet<Integer> docSetIterator(SegmentReader segmentReader) {
             return new AllDocSet(segmentReader.maxDocs());
         }
     }

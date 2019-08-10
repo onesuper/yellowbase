@@ -78,9 +78,9 @@ public class Union<DocId extends Comparable<DocId>> implements DocSet<DocId> {
     }
 
     /*
-     * 用某个给定 docSet 装满 buffer
+     * 用某个给定 docSetIterator 装满 buffer
      *
-     * 当 docSet 为空时，返回 true
+     * 当 docSetIterator 为空时，返回 true
      *
      * 若填满则返回 false
      */

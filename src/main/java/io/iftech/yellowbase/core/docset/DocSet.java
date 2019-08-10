@@ -10,8 +10,8 @@ public interface DocSet<DocId extends Comparable<DocId>> {
      *
      * 必须先调用一次 next()，才能得到第一个有效的 docId：
      *
-     * while(docSet.next()) {
-     *   process(docSet.docId)
+     * while(docSetIterator.next()) {
+     *   process(docSetIterator.docId)
      * }
      *
      * @return false 如果没有文档了
