@@ -2,6 +2,7 @@ package io.iftech.yellowbase.core;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.truth.Truth;
+import io.iftech.yellowbase.core.functional.Executor;
 import java.util.List;
 import org.junit.Test;
 
