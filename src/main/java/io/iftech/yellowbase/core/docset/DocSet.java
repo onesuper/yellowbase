@@ -1,6 +1,8 @@
 package io.iftech.yellowbase.core.docset;
 
 
+import java.util.function.Consumer;
+
 public interface DocSet<DocId extends Comparable<DocId>> {
 
     /**
@@ -45,6 +47,11 @@ public interface DocSet<DocId extends Comparable<DocId>> {
         }
     }
 
+    default void foreach(Consumer<DocId> callback) {
+        while (next()) {
+            callback.accept(docId());
+        }
+    }
 
     /**
      * 获取当前文档的 DocId
