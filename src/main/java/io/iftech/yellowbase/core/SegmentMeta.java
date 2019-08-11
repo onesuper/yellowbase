@@ -13,6 +13,10 @@ public final class SegmentMeta {
         this.maxDocs = maxDocs;
     }
 
+    public static SegmentMeta newInstance(String segmentId, int maxDocs) {
+        return new SegmentMeta(segmentId, maxDocs);
+    }
+
     public static SegmentMeta newInstance() {
         return new SegmentMeta(UUID.randomUUID().toString(), 0);
     }
@@ -23,5 +27,10 @@ public final class SegmentMeta {
 
     public int maxDocs() {
         return maxDocs;
+    }
+
+    @Override
+    public String toString() {
+        return "SegmentMeta(" + segmentId + ")";
     }
 }
