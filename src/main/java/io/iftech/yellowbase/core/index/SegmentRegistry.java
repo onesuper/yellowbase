@@ -11,7 +11,15 @@ public final class SegmentRegistry {
 
     private Map<String, SegmentEntry> segmentEntryByIds;
 
-    public SegmentRegistry(List<SegmentMeta> segmentMetas) {
+    public static SegmentRegistry empty() {
+        return new SegmentRegistry(ImmutableList.of());
+    }
+
+    public static SegmentRegistry fromSegments(List<SegmentMeta> segmentMetas) {
+        return new SegmentRegistry(segmentMetas);
+    }
+
+    private SegmentRegistry(List<SegmentMeta> segmentMetas) {
         this.segmentEntryByIds = new HashMap<>();
         for (SegmentMeta meta : segmentMetas) {
             this.segmentEntryByIds.put(meta.id(), new SegmentEntry(meta));
@@ -33,6 +41,7 @@ public final class SegmentRegistry {
     public void remove(String segmentId) {
         segmentEntryByIds.remove(segmentId);
     }
+
     public List<SegmentEntry> getAllSegmentEntries() {
         return ImmutableList.copyOf(segmentEntryByIds.values());
     }
