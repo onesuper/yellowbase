@@ -9,7 +9,7 @@ import io.iftech.yellowbase.core.collect.TopDocs;
 import io.iftech.yellowbase.core.collect.TopDocsCollector;
 import io.iftech.yellowbase.core.collect.TopicDocsCollectorReducer;
 import io.iftech.yellowbase.core.docset.DocSet;
-import io.iftech.yellowbase.core.functional.MapIterable;
+import io.iftech.yellowbase.core.functional.MapExecutor;
 import io.iftech.yellowbase.core.query.Query;
 import io.iftech.yellowbase.core.query.Scorer;
 import io.iftech.yellowbase.core.query.Weight;
@@ -38,13 +38,13 @@ public final class Searcher implements Searchable {
      */
     @Override
     public SearchResult search(Query query) {
-        MapIterable executor = index.searchExecutor();
+        MapExecutor executor = index.searchExecutor();
         TopDocs reducedTopDocs = searchWithExecutor(query, collectorReducer, executor);
         return new SearchResult(reducedTopDocs.totalHits, reducedTopDocs.scoreDocs);
     }
 
     private <C extends Collector<Integer>, T> T searchWithExecutor(Query query,
-        CollectorReducer<C, T> collectorReducer, MapIterable executor) {
+        CollectorReducer<C, T> collectorReducer, MapExecutor executor) {
 
         Weight weight = query.weight();
 

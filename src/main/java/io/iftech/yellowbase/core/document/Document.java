@@ -7,15 +7,15 @@ import org.jetbrains.annotations.NotNull;
 
 public class Document implements Iterable<Field> {
 
-    private final List<Field> fields = new ArrayList();
+    private final List<Field> fields = new ArrayList<>();
 
     @NotNull
-    @Override
     public Iterator<Field> iterator() {
         return fields.iterator();
     }
 
-    public void add(Field field) {
+    public Document add(Field field) {
         fields.add(field);
+        return this;
     }
 }
