@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface MapIterable {
+public interface MapExecutor {
 
     <I, R> List<R> map(Function<I, R> f, Iterable<I> is);
 
