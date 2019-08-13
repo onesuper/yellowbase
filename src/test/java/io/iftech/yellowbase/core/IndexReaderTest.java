@@ -9,7 +9,7 @@ import org.junit.Test;
 public class IndexReaderTest {
 
     @Test
-    public void reflectChangeAfterReload() {
+    public void reflectOnSearcherAfterReload() {
         IndexMetaRepository repository = new RAMIndexMetaRepository();
 
         repository.createSegmentMeta(new SegmentMeta("s1", 1));
