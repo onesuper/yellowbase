@@ -1,5 +1,7 @@
 package io.iftech.yellowbase.core.query;
 
+import io.iftech.yellowbase.core.SegmentReader;
+import io.iftech.yellowbase.core.docset.DocSet;
 import io.iftech.yellowbase.core.query.BooleanClause.Kind;
 import java.util.Collection;
 import java.util.EnumMap;
@@ -29,6 +31,29 @@ public class BooleanQuery extends Query {
                     q.accept(v);
                 }
             }
+        }
+    }
+
+    @Override
+    public Weight weight() {
+        return new BooleanWeight(clauseByKind);
+    }
+
+    private class BooleanWeight implements Weight {
+        private Map<Kind, Collection<Query>> clauseByKind;
+
+        public BooleanWeight(Map<Kind, Collection<Query>> clauseByKind) {
+            this.clauseByKind = clauseByKind;
+        }
+
+        @Override
+        public Scorer scorer() {
+            return new ConstantScorer(1);
+        }
+
+        @Override
+        public DocSet<Integer> docSetIterator(SegmentReader segmentReader) {
+            return null;
         }
     }
 }
