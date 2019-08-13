@@ -2,15 +2,14 @@ package io.iftech.yellowbase.core.index;
 
 import io.iftech.yellowbase.core.SegmentMeta;
 import io.iftech.yellowbase.core.functional.RwLockGuard;
+import java.util.ArrayList;
 import java.util.List;
 
 public final class SegmentManager {
 
-    static class SegmentRegistries {
-
+    private static class SegmentRegistries {
         private SegmentRegistry uncommitted;
         private SegmentRegistry committed;
-
     }
 
     private final RwLockGuard<SegmentRegistries> rwLockGuard;
@@ -19,7 +18,7 @@ public final class SegmentManager {
         this.rwLockGuard = new RwLockGuard<>(registries);
     }
 
-    public SegmentManager fromSegments(List<SegmentMeta> segmentMetas) {
+    public static SegmentManager fromSegments(List<SegmentMeta> segmentMetas) {
         SegmentRegistries registries = new SegmentRegistries();
         registries.committed = SegmentRegistry.empty();
         registries.uncommitted = SegmentRegistry.fromSegments(segmentMetas);
@@ -38,6 +37,16 @@ public final class SegmentManager {
                 r.committed.add(entry);
             }
         });
+    }
+
+    public List<SegmentEntry> getAllSegmentEntries() {
+        final List<SegmentEntry> entries = new ArrayList<>();
+        rwLockGuard.read(r -> {
+            entries.addAll(r.committed.getAllSegmentEntries());
+            entries.addAll(r.uncommitted.getAllSegmentEntries());
+        });
+
+        return entries;
     }
 
     @Override

@@ -3,12 +3,15 @@ package io.iftech.yellowbase.core;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.iftech.yellowbase.core.functional.DirectorExecutor;
-import io.iftech.yellowbase.core.functional.Executor;
-import io.iftech.yellowbase.core.functional.MapIterable;
+import io.iftech.yellowbase.core.functional.DirectorMapExecutor;
+import io.iftech.yellowbase.core.functional.MapExecutor;
+import io.iftech.yellowbase.core.functional.ParallelMapExecutor;
+import io.iftech.yellowbase.core.index.IndexWriter;
 import io.iftech.yellowbase.core.query.Query;
 import io.iftech.yellowbase.core.repository.IndexMetaRepository;
 import io.iftech.yellowbase.core.repository.RAMIndexMetaRepository;
+import io.iftech.yellowbase.core.repository.RAMSegmentRepository;
+import io.iftech.yellowbase.core.repository.SegmentRepository;
 import io.iftech.yellowbase.core.search.Searcher;
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -16,19 +19,29 @@ import java.util.stream.Collectors;
 
 public class Index {
 
-    private MapIterable searchExecutor;
+    private MapExecutor searchExecutor;
     private IndexMetaRepository indexMetaRepository;
+    private SegmentRepository segmentRepository;
+
+    private Index(IndexMetaRepository indexMetaRepository, SegmentRepository segmentRepository) {
+        this.searchExecutor = new DirectorMapExecutor();
+        this.indexMetaRepository = indexMetaRepository;
+        this.segmentRepository = segmentRepository;
+    }
 
     @VisibleForTesting
-    Index(IndexMetaRepository indexMetaRepository) {
-        this.searchExecutor = new DirectorExecutor();
-        this.indexMetaRepository = indexMetaRepository;
+    public static Index create(IndexMetaRepository indexMetaRepository, SegmentRepository segmentRepository) {
+        return new Index(indexMetaRepository, segmentRepository);
     }
 
+    @VisibleForTesting
     public static Index createInRAM() {
-        return new Index(new RAMIndexMetaRepository());
+        return new Index(new RAMIndexMetaRepository(), new RAMSegmentRepository());
     }
 
+    /**
+     * @return 当前所有可被搜索的 {@link Segment}
+     */
     public List<Segment> getSearchableSegments() {
         return getSegmentMetas().stream().map(this::segment).collect(Collectors.toList());
     }
@@ -43,6 +56,9 @@ public class Index {
         return new Segment(this, segmentMeta);
     }
 
+    /**
+     * @return 当前所有可被搜索的 {@link SegmentMeta}
+     */
     public List<SegmentMeta> getSegmentMetas() {
         return getIndexMeta().getSegmentMetas();
     }
@@ -51,27 +67,41 @@ public class Index {
         return indexMetaRepository.getIndexMeta();
     }
 
+    public SegmentRepository getSegmentRepository() {
+        return this.segmentRepository;
+    }
+
+    public IndexMetaRepository getIndexMetaRepository() {
+        return this.indexMetaRepository;
+    }
+
     /**
      * 用于获取并发执行 {@link Searcher#search(Query)} 的线程池
      *
      * 默认不使用线程池，在调用线程中执行
      *
-     * @return {@link MapIterable}
+     * @return {@link MapExecutor}
      */
-    public MapIterable searchExecutor() {
+    public MapExecutor searchExecutor() {
         return searchExecutor;
-    }
-
-    public void setNumThreads(int n) {
-        this.searchExecutor = new Executor(Executors.newFixedThreadPool(n,
-            new ThreadFactoryBuilder().setNameFormat("yellowbase-search-%d").build()));
-    }
-
-    public void setDefaultNumThreads() {
-        setNumThreads(Runtime.getRuntime().availableProcessors());
     }
 
     public IndexReader reader() {
         return IndexReader.newBuilder(this).build();
+    }
+
+    public IndexWriter writer(int numThreads) {
+        return IndexWriter.newInstance(this, numThreads);
+    }
+
+    // Setters
+
+    public void setSearchThreads(int n) {
+        this.searchExecutor = new ParallelMapExecutor(Executors.newFixedThreadPool(n,
+            new ThreadFactoryBuilder().setNameFormat("yellowbase-search-%d").build()));
+    }
+
+    public void setDefaultSearchThreads() {
+        setSearchThreads(Runtime.getRuntime().availableProcessors());
     }
 }
