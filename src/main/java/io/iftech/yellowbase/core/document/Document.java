@@ -1,21 +1,18 @@
 package io.iftech.yellowbase.core.document;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
-public class Document implements Iterable<Field> {
+public class Document{
 
     private final List<Field> fields = new ArrayList<>();
 
-    @NotNull
-    public Iterator<Field> iterator() {
-        return fields.iterator();
+    public List<Field> getFields() {
+        return fields;
     }
 
     public Document add(Field field) {
-        fields.add(field);
+        this.fields.add(field);
         return this;
     }
 }
