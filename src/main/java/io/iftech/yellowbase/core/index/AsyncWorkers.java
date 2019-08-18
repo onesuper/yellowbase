@@ -2,6 +2,7 @@ package io.iftech.yellowbase.core.index;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -22,7 +23,9 @@ public final class AsyncWorkers {
             .collect(Collectors.toList());
     }
 
-    public void join() {
-        futureHandles.forEach(CompletableFuture::join);
+    public void join() throws InterruptedException, ExecutionException {
+        for (CompletableFuture<Void> future: futureHandles) {
+            future.get();
+        }
     }
 }
