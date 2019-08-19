@@ -2,6 +2,7 @@ package io.iftech.yellowbase.core.collect;
 
 import com.google.common.collect.MinMaxPriorityQueue;
 
+@SuppressWarnings("UnstableApiUsage")
 public class SimpleTopDocsCollector<DocId> implements TopDocsCollector<DocId> {
 
     private final MinMaxPriorityQueue<ScoreDoc<DocId>> heap;
