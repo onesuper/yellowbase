@@ -1,5 +1,7 @@
 package io.iftech.yellowbase.core.io.proto;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Streams;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.document.Document;
 import io.iftech.yellowbase.core.document.Field;
@@ -7,6 +9,8 @@ import io.iftech.yellowbase.core.document.Fields;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
 import org.junit.Test;
 
 public class ProtobufDocumentReaderWriterTest {
@@ -14,18 +18,24 @@ public class ProtobufDocumentReaderWriterTest {
     @Test
     public void testDocumentWithMultipleFields() throws Exception {
 
-        Field f1 = Fields.as("int", 12345 );
-        Field f2 = Fields.as("string", "bob dylan" );
-        Field f3 = Fields.as("float", Float.MAX_VALUE);
-        Document document = new Document()
-            .add(f1)
-            .add(f2)
-            .add(f3);
+        List<Field> fields = ImmutableList.of(
+            Fields.as("int", 12345),
+            Fields.as("string", "bob dylan"),
+            Fields.as("float", Float.MAX_VALUE),
+            Fields.as("double", Double.MAX_VALUE),
+            Fields.as("date", new Date())
+        );
 
-        Document document1 = serializeAndThenBack(document);
-        Truth.assertThat(document1.getFields().get(0)).isEqualTo(f1);
-        Truth.assertThat(document1.getFields().get(1)).isEqualTo(f2);
-        Truth.assertThat(document1.getFields().get(2)).isEqualTo(f3);
+        Document document = new Document();
+        fields.forEach(document::add);
+        Document result = serializeAndThenBack(document);
+
+        Streams.zip(document.getFields().stream(), result.getFields().stream(),
+            (o, i) -> {
+                Truth.assertThat(o).isEqualTo(i);
+                return 0;
+            }
+        );
     }
 
     private Document serializeAndThenBack(Document document) throws Exception {
