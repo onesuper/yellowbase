@@ -29,9 +29,11 @@ public final class IndexWriter implements Indexable {
     private static final int MAX_PENDING_DOCUMENTS = 1_000;
 
     /**
-     * 当一个线程内存中 segment 大小超过这个值时，会进行持久化
+     * 单个线程内存中 segment 大小超过 MAX_HEAP_SIZE_IN_BYTES 时会进行持久化到外存
+     *
+     * 默认大小 3 MB
      */
-    private static final int MAX_HEAP_SIZE_IN_BYTES = 1_000_000;
+    private static final int MAX_HEAP_SIZE_IN_BYTES = 3_000_000;
 
     private BlockingQueue<Document> indexingQueue;
     
