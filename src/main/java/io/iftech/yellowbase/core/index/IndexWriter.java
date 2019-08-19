@@ -34,20 +34,17 @@ public final class IndexWriter implements Indexable {
     private static final int MAX_HEAP_SIZE_IN_BYTES = 1_000_000;
 
     private BlockingQueue<Document> indexingQueue;
-
-    private AtomicInteger commitVersion = new AtomicInteger();
-
+    
     private Index index;
     private SegmentUpdater segmentUpdater;
     private SegmentRepository segmentRepository;
 
-    /**
-     * Per Thread memory budget
-     */
+    // 使用 commitVersion 区分每轮 commit 的 index worker
+    // 当工作队列为空且 commitVersion > workerVersion 时，表示 worker 完成了这一轮的 commit
+    private AtomicInteger commitVersion = new AtomicInteger();
+
+    // Per Thread memory budget
     private int memoryBudget;
-
-    private int indexQueueSize;
-
     private int numThreads;
     private AsyncWorkers indexWorkers;
     private Consumer<Document> postIndexHandler = null;
@@ -64,12 +61,11 @@ public final class IndexWriter implements Indexable {
         this.memoryBudget = memoryBudget;
         this.segmentRepository = index.getSegmentRepository();
         this.segmentUpdater = new SegmentUpdater(index);
-        this.indexQueueSize = indexQueueSize;
         this.indexWorkers = new AsyncWorkers(
             Executors.newCachedThreadPool(
                 new ThreadFactoryBuilder().setNameFormat("yellowbase-index-%d").build()));
 
-        this.indexingQueue = new ArrayBlockingQueue<>(MAX_PENDING_DOCUMENTS);
+        this.indexingQueue = new ArrayBlockingQueue<>(indexQueueSize);
         this.startIndexWorkers();
     }
 
@@ -117,9 +113,6 @@ public final class IndexWriter implements Indexable {
 
     // The infinite index worker loop
     // reads documents from queue and collect them into segmentUpdater
-    //
-    // 使用 commitVersion 区分每轮 commit 的 index worker
-    // 当工作队列为空且 commitVersion > workerVersion 时，表示 worker 完成了这一轮的 commit
     private void startIndexWorkers() {
         Runnable workerLoop = () -> {
             int workerVersion = this.commitVersion.get();
