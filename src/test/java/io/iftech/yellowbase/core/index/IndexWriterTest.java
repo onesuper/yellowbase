@@ -3,7 +3,7 @@ package io.iftech.yellowbase.core.index;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.Index;
 import io.iftech.yellowbase.core.document.Document;
-import io.iftech.yellowbase.core.document.Fields;
+import io.iftech.yellowbase.core.document.FieldValue;
 import java.util.concurrent.CountDownLatch;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch.countDown());
 
         for (int i = 0; i < 5000; i++) {
-            writer.addDocument(new Document().add(Fields.as("a", "zz")));
+            writer.addDocument(new Document().add(FieldValue.as("a", "zz")));
         }
 
         latch.await();
@@ -36,7 +36,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch.countDown());
 
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().add(Fields.as("a", "zz")));
+            writer.addDocument(new Document().add(FieldValue.as("a", "zz")));
         }
 
         writer.commit();
@@ -53,7 +53,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch1.countDown());
 
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().add(Fields.as("a", "zz")));
+            writer.addDocument(new Document().add(FieldValue.as("a", "zz")));
         }
 
         writer.commit();
@@ -63,7 +63,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch2.countDown());
 
         for (int i = 0; i < 100; i++) {
-            writer.addDocument(new Document().add(Fields.as("b", "zz")));
+            writer.addDocument(new Document().add(FieldValue.as("b", "zz")));
         }
 
         latch2.await();

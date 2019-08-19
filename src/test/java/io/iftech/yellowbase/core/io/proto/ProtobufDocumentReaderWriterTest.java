@@ -4,8 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Streams;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.document.Document;
-import io.iftech.yellowbase.core.document.Field;
-import io.iftech.yellowbase.core.document.Fields;
+import io.iftech.yellowbase.core.document.FieldValue;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -18,12 +17,12 @@ public class ProtobufDocumentReaderWriterTest {
     @Test
     public void testDocumentWithMultipleFields() throws Exception {
 
-        List<Field> fields = ImmutableList.of(
-            Fields.as("int", 12345),
-            Fields.as("string", "bob dylan"),
-            Fields.as("float", Float.MAX_VALUE),
-            Fields.as("double", Double.MAX_VALUE),
-            Fields.as("date", new Date())
+        List<FieldValue> fields = ImmutableList.of(
+            FieldValue.as("int", 12345),
+            FieldValue.as("string", "bob dylan"),
+            FieldValue.as("float", Float.MAX_VALUE),
+            FieldValue.as("double", Double.MAX_VALUE),
+            FieldValue.as("date", new Date())
         );
 
         Document document = new Document();
