@@ -1,6 +1,5 @@
 package io.iftech.yellowbase.core.io.proto;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.protobuf.CodedOutputStream;
 import io.iftech.yellowbase.core.document.Field;
 import io.iftech.yellowbase.core.io.BinarySerializable;
@@ -13,13 +12,8 @@ public class ProtobufFieldWriter implements BinarySerializable<Field> {
 
     private CodedOutputStream out;
 
-    @VisibleForTesting
     ProtobufFieldWriter(OutputStream os) {
         this.out = CodedOutputStream.newInstance(os);
-    }
-
-    public ProtobufFieldWriter(CodedOutputStream out) {
-        this.out = out;
     }
 
     @Override

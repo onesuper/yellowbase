@@ -1,6 +1,5 @@
 package io.iftech.yellowbase.core.io.proto;
 
-import com.google.common.annotations.VisibleForTesting;
 import com.google.protobuf.CodedInputStream;
 import io.iftech.yellowbase.core.document.Field;
 import io.iftech.yellowbase.core.document.Fields.BigIntField;
@@ -20,13 +19,8 @@ public class ProtobufFieldReader implements BinaryDeserializable<Field> {
 
     private CodedInputStream in;
 
-    @VisibleForTesting
     ProtobufFieldReader(InputStream is) {
         this.in = CodedInputStream.newInstance(is);
-    }
-
-    public ProtobufFieldReader(CodedInputStream in) {
-        this.in = in;
     }
 
     @Override
