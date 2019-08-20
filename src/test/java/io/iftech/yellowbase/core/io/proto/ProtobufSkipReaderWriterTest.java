@@ -17,13 +17,13 @@ public class ProtobufSkipReaderWriterTest {
 
         ProtobufSkipReader reader = new ProtobufSkipReader(data);
 
-        Truth.assertThat(reader.advance()).isTrue();
+        Truth.assertThat(reader.next()).isTrue();
         Truth.assertThat(reader.docId()).isEqualTo(1);
-        Truth.assertThat(reader.advance()).isTrue();
+        Truth.assertThat(reader.next()).isTrue();
         Truth.assertThat(reader.docId()).isEqualTo(5);
-        Truth.assertThat(reader.advance()).isTrue();
+        Truth.assertThat(reader.next()).isTrue();
         Truth.assertThat(reader.docId()).isEqualTo(9);
-        Truth.assertThat(reader.advance()).isFalse();
+        Truth.assertThat(reader.next()).isFalse();
     }
 
 }

@@ -5,5 +5,5 @@ import java.io.IOException;
 public interface SkipReader<DocId> {
     DocId docId();
 
-    boolean advance() throws IOException;
+    boolean next() throws IOException;
 }

@@ -21,7 +21,7 @@ public final class ProtobufSkipReader implements SkipReader<Integer> {
     }
 
     @Override
-    public boolean advance() throws IOException {
+    public boolean next() throws IOException {
         if (in.isAtEnd()) {
             return false;
         } else {
