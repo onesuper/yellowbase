@@ -1,5 +1,8 @@
 package io.iftech.yellowbase.core.document;
 
+/**
+ * FieldEntry 中记录了字段的类型和索引信息
+ */
 public class FieldEntry {
 
     private final Field field;
@@ -16,6 +19,18 @@ public class FieldEntry {
         this.field = new Field(name);
         this.type = type;
         this.option = option;
+    }
+
+    public Field getField() {
+        return field;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public Option getOption() {
+        return option;
     }
 
     @Override
