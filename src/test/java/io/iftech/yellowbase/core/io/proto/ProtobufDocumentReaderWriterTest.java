@@ -34,6 +34,28 @@ public class ProtobufDocumentReaderWriterTest {
         Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
     }
 
+    @Test
+    public void fieldNamesCanChange() throws Exception {
+
+        Schema schema2 = Schema.builder()
+            .addIntField("String_0", 0, Options.DEFAULT)
+            .addIntField("Int_1", 1, Options.DEFAULT)
+            .addFloatField("Float_2", 2, Options.INDEXED)
+            .addDatetimeField("Datetime_3", 3, Options.STORED)
+            .addBigIntField("Bigint_4", 4,  Options.DEFAULT)
+            .addDatetimeField("Datetime_5", 5, Options.DEFAULT)
+            .addDoubleField("Double_6", 6 ,Options.DEFAULT)
+            .build();
+
+        Document document = new Document()
+            .addInt(schema2.getField("Int_1").get(), 12345)
+            .addString(schema2.getField("String_0").get(), "bob dylan")
+            .addFloat(schema2.getField("Float_2").get(), Float.MAX_VALUE)
+            .addDateTime(schema2.getField("Datetime_5").get(), new Date());
+
+        Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
+    }
+
     private Document serializeAndThenBack(Document document) throws Exception {
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
         ProtobufDocumentWriter ser = new ProtobufDocumentWriter(boas);
