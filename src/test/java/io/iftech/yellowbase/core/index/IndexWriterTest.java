@@ -3,7 +3,8 @@ package io.iftech.yellowbase.core.index;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.Index;
 import io.iftech.yellowbase.core.document.Document;
-import io.iftech.yellowbase.core.document.Field;
+import io.iftech.yellowbase.core.document.Options;
+import io.iftech.yellowbase.core.document.Schema;
 import java.util.concurrent.CountDownLatch;
 import org.junit.Test;
 
@@ -18,8 +19,12 @@ public class IndexWriterTest {
         CountDownLatch latch = new CountDownLatch(5000);
         writer.setPostIndexHandler(doc -> latch.countDown());
 
+        Schema schema = Schema.builder()
+            .addStringField("1", 1, Options.DEFAULT)
+            .build();
+
         for (int i = 0; i < 5000; i++) {
-            writer.addDocument(new Document().addString(new Field("a", 1), "test"));
+            writer.addDocument(new Document().addString(schema.getField("a").get(), "test"));
         }
 
         latch.await();
@@ -35,8 +40,12 @@ public class IndexWriterTest {
         CountDownLatch latch = new CountDownLatch(1000);
         writer.setPostIndexHandler(doc -> latch.countDown());
 
+        Schema schema = Schema.builder()
+            .addStringField("b", 1, Options.DEFAULT)
+            .build();
+
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().addString(new Field("b", 2), "test"));
+            writer.addDocument(new Document().addString(schema.getField("b").get(), "test"));
         }
 
         writer.commit();
@@ -52,8 +61,13 @@ public class IndexWriterTest {
         CountDownLatch latch1 = new CountDownLatch(1000);
         writer.setPostIndexHandler(doc -> latch1.countDown());
 
+        Schema schema = Schema.builder()
+            .addStringField("a", 1, Options.DEFAULT)
+            .addStringField("b", 2, Options.DEFAULT)
+            .build();
+
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().addString(new Field("c", 1), "test"));
+            writer.addDocument(new Document().addString(schema.getField("a").get(), "test"));
         }
 
         writer.commit();
@@ -63,7 +77,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch2.countDown());
 
         for (int i = 0; i < 100; i++) {
-            writer.addDocument(new Document().addString(new Field("d", 2), "test"));
+            writer.addDocument(new Document().addString(schema.getField("b").get(), "test"));
         }
 
         latch2.await();

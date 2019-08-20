@@ -2,7 +2,8 @@ package io.iftech.yellowbase.core.io.proto;
 
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.document.Document;
-import io.iftech.yellowbase.core.document.Field;
+import io.iftech.yellowbase.core.document.Options;
+import io.iftech.yellowbase.core.document.Schema;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -11,14 +12,24 @@ import org.junit.Test;
 
 public class ProtobufDocumentReaderWriterTest {
 
+    private Schema schema = Schema.builder()
+        .addIntField("string_0", 0, Options.DEFAULT)
+        .addIntField("int_1", 1, Options.DEFAULT)
+        .addFloatField("float_2", 2, Options.INDEXED)
+        .addDatetimeField("datetime_3", 3, Options.STORED)
+        .addBigIntField("bigint_4", 4,  Options.DEFAULT)
+        .addDatetimeField("datetime_5", 5, Options.DEFAULT)
+        .addDoubleField("double_6", 6 ,Options.DEFAULT)
+        .build();
+
     @Test
     public void testDocumentWithMultipleFields() throws Exception {
 
         Document document = new Document()
-            .addInt(new Field("int", 1), 12345)
-            .addString(new Field("string", 2), "bob dylan")
-            .addFloat(new Field("float", 3), Float.MAX_VALUE)
-            .addDateTime(new Field("datetime", 4), new Date());
+            .addInt(schema.getField("int_1").get(), 12345)
+            .addString(schema.getField("string_0").get(), "bob dylan")
+            .addFloat(schema.getField("float_2").get(), Float.MAX_VALUE)
+            .addDateTime(schema.getField("datetime_5").get(), new Date());
 
         Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
     }

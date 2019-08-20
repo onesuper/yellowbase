@@ -57,7 +57,7 @@ public final class Schema {
         return new SchemaBuilder();
     }
 
-    static class SchemaBuilder {
+    public static class SchemaBuilder {
 
         private List<FieldEntry> fields = new LinkedList<>();
 

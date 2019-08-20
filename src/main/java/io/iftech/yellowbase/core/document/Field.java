@@ -6,7 +6,8 @@ public class Field {
 
     private final int fieldNumber;
 
-    public Field(String name, int fieldNumber) {
+    // Don't generate outside the package !!
+    Field(String name, int fieldNumber) {
         this.name = name;
         this.fieldNumber = fieldNumber;
     }
