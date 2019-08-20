@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.io.proto;
+package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.protobuf.CodedInputStream;
 import io.iftech.yellowbase.core.postings.SkipReader;

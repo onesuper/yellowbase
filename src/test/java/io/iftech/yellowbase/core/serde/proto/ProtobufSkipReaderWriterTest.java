@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.io.proto;
+package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.common.truth.Truth;
 import org.junit.Test;

@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.io.proto;
+package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.document.Document;
@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Date;
 import org.junit.Test;
 
-public class ProtobufDocumentSerdeTest {
+public class ProtobufDocumentSerializableTest {
 
     private Schema schema = Schema.builder()
         .addIntField("string_0", 0, Options.DEFAULT)
@@ -58,7 +58,7 @@ public class ProtobufDocumentSerdeTest {
 
     private Document serializeAndThenBack(Document document) throws Exception {
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
-        ProtobufDocumentSerde serde = new ProtobufDocumentSerde(document.getSchema());
+        ProtobufDocumentSerializable serde = new ProtobufDocumentSerializable(document.getSchema());
         serde.serialize(document, boas);
 
         InputStream is = new ByteArrayInputStream(boas.toByteArray());

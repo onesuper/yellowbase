@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.io.proto;
+package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
@@ -6,18 +6,18 @@ import io.iftech.yellowbase.core.document.Document;
 import io.iftech.yellowbase.core.document.FieldValue;
 import io.iftech.yellowbase.core.document.Schema;
 import io.iftech.yellowbase.core.document.Type;
-import io.iftech.yellowbase.core.io.BinarySerde;
+import io.iftech.yellowbase.core.serde.BinarySerializable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public class ProtobufDocumentSerde implements BinarySerde<Document> {
+public class ProtobufDocumentSerializable implements BinarySerializable<Document> {
 
     private Schema schema;
 
-    public ProtobufDocumentSerde(Schema schema) {
+    public ProtobufDocumentSerializable(Schema schema) {
         this.schema = schema;
     }
 
