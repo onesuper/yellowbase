@@ -26,10 +26,10 @@ public class ProtobufDocumentReaderWriterTest {
     public void testDocumentWithMultipleFields() throws Exception {
 
         Document document = new Document()
-            .addInt(schema.getField("int_1").get(), 12345)
-            .addString(schema.getField("string_0").get(), "bob dylan")
-            .addFloat(schema.getField("float_2").get(), Float.MAX_VALUE)
-            .addDateTime(schema.getField("datetime_5").get(), new Date());
+            .addInt(schema.getField("int_1"), 12345)
+            .addString(schema.getField("string_0"), "bob dylan")
+            .addFloat(schema.getField("float_2"), Float.MAX_VALUE)
+            .addDateTime(schema.getField("datetime_5"), new Date());
 
         Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
     }
@@ -48,10 +48,10 @@ public class ProtobufDocumentReaderWriterTest {
             .build();
 
         Document document = new Document()
-            .addInt(schema2.getField("Int_1").get(), 12345)
-            .addString(schema2.getField("String_0").get(), "bob dylan")
-            .addFloat(schema2.getField("Float_2").get(), Float.MAX_VALUE)
-            .addDateTime(schema2.getField("Datetime_5").get(), new Date());
+            .addInt(schema2.getField("Int_1"), 12345)
+            .addString(schema2.getField("String_0"), "bob dylan")
+            .addFloat(schema2.getField("Float_2"), Float.MAX_VALUE)
+            .addDateTime(schema2.getField("Datetime_5"), new Date());
 
         Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
     }

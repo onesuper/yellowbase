@@ -18,18 +18,31 @@ public final class Schema {
     // For fast retrieve field through schema
     private Map<String, Field> fieldsByName;
 
+    private Map<Integer, Field> fieldsByNumber;
+
     Schema(List<FieldEntry> fields) {
         this.fields = fields;
         this.fieldsByName = fields.stream().collect(
             Collectors.toMap(FieldEntry::getName, this::makeField));
+
+        this.fieldsByNumber = fields.stream().collect(
+            Collectors.toMap(FieldEntry::getFieldNumber, this::makeField));
     }
 
     private Field makeField(FieldEntry fieldEntry) {
         return new Field(fieldEntry.getName(), fieldEntry.getFieldNumber());
     }
 
-    public Optional<Field> getField(String name) {
+    public Optional<Field> getOptField(String name) {
         return Optional.ofNullable(this.fieldsByName.get(name));
+    }
+
+    public Field getField(String name) {
+        return getOptField(name).orElseThrow(() -> new IllegalArgumentException("Can not find field: " + name));
+    }
+
+    public Optional<Field> getFieldByNumber(int fieldNumber) {
+        return Optional.ofNullable(this.fieldsByNumber.get(fieldNumber));
     }
 
     // helpers

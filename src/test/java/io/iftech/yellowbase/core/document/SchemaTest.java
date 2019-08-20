@@ -5,6 +5,7 @@ import com.google.common.io.CharStreams;
 import com.google.common.truth.Truth;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Date;
 import org.junit.Test;
 
 public class SchemaTest {
@@ -20,15 +21,9 @@ public class SchemaTest {
 
     @Test
     public void testGetField() {
-        Truth.assertThat(schema.getField("int_1").isPresent()).isTrue();
-        Truth.assertThat(schema.getField("int_1").get().getFieldNumber()).isEqualTo(1);
-
-        Truth.assertThat(schema.getField("float_2").isPresent()).isTrue();
-        Truth.assertThat(schema.getField("float_2").get().getFieldNumber()).isEqualTo(2);
-
-        Truth.assertThat(schema.getField("datetime_3").isPresent()).isTrue();
-        Truth.assertThat(schema.getField("datetime_3").get().getFieldNumber()).isEqualTo(3);
-        Truth.assertThat(schema.getField("datetime_33").isPresent()).isFalse();
+        Truth.assertThat(schema.getField("int_1").getFieldNumber()).isEqualTo(1);
+        Truth.assertThat(schema.getField("float_2").getFieldNumber()).isEqualTo(2);
+        Truth.assertThat(schema.getField("datetime_3").getFieldNumber()).isEqualTo(3);
     }
 
     @Test
@@ -41,5 +36,21 @@ public class SchemaTest {
     @Test
     public void testSerializeJsonThenBack() {
         Truth.assertThat(Schema.fromJson(schema.toJson(false))).isEqualTo(schema);
+    }
+
+    @Test
+    public void documentCanConvertToJson() {
+
+        Schema newSchema = Schema.builder()
+            .addIntField("Int_1", 1, Options.DEFAULT)
+            .addFloatField("Float_2", 2, Options.INDEXED)
+            .build();
+
+        Document oldDocument = new Document()
+            .addDateTime(schema.getField("datetime_5"), new Date())
+            .addFloat(schema.getField("float_2"), 0.134F)
+            .addInt(schema.getField("int_1"), Integer.MAX_VALUE);
+
+        Truth.assertThat(oldDocument.toJson(newSchema)).isEqualTo("{\"Int_1\":2147483647,\"Float_2\":0.134}");
     }
 }

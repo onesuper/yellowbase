@@ -52,6 +52,14 @@ public class FieldValue {
         return value;
     }
 
+    @Override
+    public String toString() {
+        return "FieldValue{" +
+            "fieldNumber=" + fieldNumber +
+            ", type=" + type +
+            ", value=" + value +
+            '}';
+    }
 
     @Override
     public boolean equals(Object o) {
