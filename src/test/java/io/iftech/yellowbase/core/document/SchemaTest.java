@@ -41,15 +41,15 @@ public class SchemaTest {
     @Test
     public void documentCanConvertToJson() {
 
+        Document oldDocument = new Document(schema)
+            .addDateTime("datetime_5", new Date())
+            .addFloat("float_2", 0.134F)
+            .addInt("int_1", Integer.MAX_VALUE);
+
         Schema newSchema = Schema.builder()
             .addIntField("Int_1", 1, Options.DEFAULT)
             .addFloatField("Float_2", 2, Options.INDEXED)
             .build();
-
-        Document oldDocument = new Document()
-            .addDateTime(schema.getField("datetime_5"), new Date())
-            .addFloat(schema.getField("float_2"), 0.134F)
-            .addInt(schema.getField("int_1"), Integer.MAX_VALUE);
 
         Truth.assertThat(oldDocument.toJson(newSchema)).isEqualTo("{\"Int_1\":2147483647,\"Float_2\":0.134}");
     }

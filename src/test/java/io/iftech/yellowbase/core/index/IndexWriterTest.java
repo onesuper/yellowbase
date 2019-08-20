@@ -24,7 +24,7 @@ public class IndexWriterTest {
             .build();
 
         for (int i = 0; i < 5000; i++) {
-            writer.addDocument(new Document().addString(schema.getField("a"), "test"));
+            writer.addDocument(new Document(schema).addString("a", "test"));
         }
 
         latch.await();
@@ -45,7 +45,7 @@ public class IndexWriterTest {
             .build();
 
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().addString(schema.getField("b"), "test"));
+            writer.addDocument(new Document(schema).addString("b", "test"));
         }
 
         writer.commit();
@@ -67,7 +67,7 @@ public class IndexWriterTest {
             .build();
 
         for (int i = 0; i < 1000; i++) {
-            writer.addDocument(new Document().addString(schema.getField("a"), "test"));
+            writer.addDocument(new Document(schema).addString("a", "test"));
         }
 
         writer.commit();
@@ -77,7 +77,7 @@ public class IndexWriterTest {
         writer.setPostIndexHandler(doc -> latch2.countDown());
 
         for (int i = 0; i < 100; i++) {
-            writer.addDocument(new Document().addString(schema.getField("b"), "test"));
+            writer.addDocument(new Document(schema).addString("b", "test"));
         }
 
         latch2.await();

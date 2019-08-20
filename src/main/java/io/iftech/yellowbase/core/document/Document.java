@@ -14,8 +14,18 @@ public class Document {
 
     private final List<FieldValue> fields = new ArrayList<>();
 
+    private final Schema schema; // back-ref
+
+    public Document(Schema schema) {
+        this.schema = schema;
+    }
+
     public List<FieldValue> getFields() {
         return ImmutableList.copyOf(fields);
+    }
+
+    public Schema getSchema() {
+        return this.schema;
     }
 
     // named document
@@ -47,33 +57,33 @@ public class Document {
 
     // field composer
 
-    public Document addString(Field field, String s) {
-        this.fields.add(FieldValue.newString(field.getFieldNumber(), s));
+    public Document addString(String name, String s) {
+        this.fields.add(FieldValue.newString(schema.getField(name).getFieldNumber(), s));
         return this;
     }
 
-    public Document addFloat(Field field, float f) {
-        this.fields.add(FieldValue.newFloat(field.getFieldNumber(), f));
+    public Document addFloat(String name, float f) {
+        this.fields.add(FieldValue.newFloat(schema.getField(name).getFieldNumber(), f));
         return this;
     }
 
-    public Document addDouble(Field field, float d) {
-        this.fields.add(FieldValue.newDouble(field.getFieldNumber(), d));
+    public Document addDouble(String name, double d) {
+        this.fields.add(FieldValue.newDouble(schema.getField(name).getFieldNumber(), d));
         return this;
     }
 
-    public Document addInt(Field field, int i) {
-        this.fields.add(FieldValue.newInt(field.getFieldNumber(), i));
+    public Document addInt(String name, int i) {
+        this.fields.add(FieldValue.newInt(schema.getField(name).getFieldNumber(), i));
         return this;
     }
 
-    public Document addBigInt(Field field, long l) {
-        this.fields.add(FieldValue.newBigInt(field.getFieldNumber(), l));
+    public Document addBigInt(String name, long l) {
+        this.fields.add(FieldValue.newBigInt(schema.getField(name).getFieldNumber(), l));
         return this;
     }
 
-    public Document addDateTime(Field field, Date d) {
-        this.fields.add(FieldValue.newDateTime(field.getFieldNumber(), d));
+    public Document addDateTime(String name, Date d) {
+        this.fields.add(FieldValue.newDateTime(schema.getField(name).getFieldNumber(), d));
         return this;
     }
 

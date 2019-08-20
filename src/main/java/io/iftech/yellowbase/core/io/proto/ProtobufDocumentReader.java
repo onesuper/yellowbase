@@ -3,6 +3,7 @@ package io.iftech.yellowbase.core.io.proto;
 import com.google.protobuf.CodedInputStream;
 import io.iftech.yellowbase.core.document.Document;
 import io.iftech.yellowbase.core.document.FieldValue;
+import io.iftech.yellowbase.core.document.Schema;
 import io.iftech.yellowbase.core.document.Type;
 import io.iftech.yellowbase.core.io.BinaryDeserializable;
 import java.io.IOException;
@@ -13,15 +14,17 @@ import java.util.Date;
 public class ProtobufDocumentReader implements BinaryDeserializable<Document> {
 
     private CodedInputStream in;
+    private Schema schema;
 
-    public ProtobufDocumentReader(InputStream is) {
+    public ProtobufDocumentReader(Schema schema, InputStream is) {
+        this.schema = schema;
         this.in = CodedInputStream.newInstance(is);
     }
 
     @Override
     public Document deserialize() throws IOException {
         int numFields = this.in.readSInt32();
-        Document doc = new Document();
+        Document doc = new Document(schema);
         for (int i = 0; i < numFields; i++) {
             doc.add(readFieldValue());
         }
