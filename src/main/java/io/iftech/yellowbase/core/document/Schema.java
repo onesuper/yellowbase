@@ -1,26 +1,56 @@
 package io.iftech.yellowbase.core.document;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.annotations.Expose;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public final class Schema {
 
+    @Expose
     private List<FieldEntry> fields;
 
-    private Map<String, FieldEntry> fieldsByName;
+    // For fast retrieve field through schema
+    private Map<String, Field> fieldsByName;
 
-    public Schema(List<FieldEntry> fields) {
+    Schema(List<FieldEntry> fields) {
         this.fields = fields;
         this.fieldsByName = fields.stream().collect(
-            Collectors.toMap(e -> e.getField().getName(), Function.identity()));
+            Collectors.toMap(FieldEntry::getName, this::makeField));
     }
 
-    public Optional<FieldEntry> getFieldEntry(String name) {
+    private Field makeField(FieldEntry fieldEntry) {
+        return new Field(fieldEntry.getName(), fieldEntry.getFieldNumber());
+    }
+
+    public Optional<Field> getField(String name) {
         return Optional.ofNullable(this.fieldsByName.get(name));
+    }
+
+    // helpers
+
+    public String toJson(boolean pretty) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithoutExposeAnnotation();
+
+        if (pretty) {
+            builder.setPrettyPrinting();
+        }
+
+        Gson gson = builder.create();
+        return gson.toJson(this);
+    }
+
+    public static Schema fromJson(String jsonString) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.excludeFieldsWithoutExposeAnnotation();
+        Gson gson = builder.create();
+        return gson.fromJson(jsonString, Schema.class);
     }
 
     public static SchemaBuilder builder() {
@@ -34,38 +64,62 @@ public final class Schema {
         private SchemaBuilder() {
         }
 
-        public SchemaBuilder addStringField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.STRING, options));
+        public SchemaBuilder addStringField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.STRING, options));
             return this;
         }
 
-        public SchemaBuilder addFloatField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.FLOAT, options));
+        public SchemaBuilder addFloatField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.FLOAT, options));
             return this;
         }
 
-        public SchemaBuilder addDoubleField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.DOUBLE, options));
+        public SchemaBuilder addDoubleField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.DOUBLE, options));
             return this;
         }
 
-        public SchemaBuilder addDatetimeField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.DATETIME, options));
+        public SchemaBuilder addDatetimeField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.DATETIME, options));
             return this;
         }
 
-        public SchemaBuilder addIntField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.INT, options));
+        public SchemaBuilder addIntField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.INT, options));
             return this;
         }
 
-        public SchemaBuilder addBigIntField(String name, Options options) {
-            this.fields.add(new FieldEntry(name, Type.BIGINT, options));
+        public SchemaBuilder addBigIntField(String name, int fieldNumber, Options options) {
+            this.fields.add(new FieldEntry(name, fieldNumber, Type.BIGINT, options));
             return this;
         }
 
         public Schema build() {
             return new Schema(fields);
         }
+    }
+
+    @Override
+    public String toString() {
+        return "Schema{" +
+            "fields=" + fields +
+            '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Schema schema = (Schema) o;
+        return fields.equals(schema.fields);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(fields);
     }
 }

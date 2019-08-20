@@ -1,0 +1,58 @@
+{
+  "fields": [
+    {
+      "name": "int_1",
+      "fieldNumber": 1,
+      "type": "INT",
+      "options": {
+        "stored": true,
+        "indexed": true
+      }
+    },
+    {
+      "name": "float_2",
+      "fieldNumber": 2,
+      "type": "FLOAT",
+      "options": {
+        "stored": false,
+        "indexed": true
+      }
+    },
+    {
+      "name": "datetime_3",
+      "fieldNumber": 3,
+      "type": "DATETIME",
+      "options": {
+        "stored": true,
+        "indexed": false
+      }
+    },
+    {
+      "name": "bigint_4",
+      "fieldNumber": 4,
+      "type": "BIGINT",
+      "options": {
+        "stored": true,
+        "indexed": true
+      }
+    },
+    {
+      "name": "datetime_5",
+      "fieldNumber": 5,
+      "type": "DATETIME",
+      "options": {
+        "stored": true,
+        "indexed": true
+      }
+    },
+    {
+      "name": "double_6",
+      "fieldNumber": 6,
+      "type": "DOUBLE",
+      "options": {
+        "stored": true,
+        "indexed": true
+      }
+    }
+  ]
+}

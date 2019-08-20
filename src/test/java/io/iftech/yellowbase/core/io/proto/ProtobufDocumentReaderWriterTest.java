@@ -1,15 +1,12 @@
 package io.iftech.yellowbase.core.io.proto;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Streams;
 import com.google.common.truth.Truth;
 import io.iftech.yellowbase.core.document.Document;
-import io.iftech.yellowbase.core.document.FieldValue;
+import io.iftech.yellowbase.core.document.Field;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Date;
-import java.util.List;
 import org.junit.Test;
 
 public class ProtobufDocumentReaderWriterTest {
@@ -17,24 +14,13 @@ public class ProtobufDocumentReaderWriterTest {
     @Test
     public void testDocumentWithMultipleFields() throws Exception {
 
-        List<FieldValue> fields = ImmutableList.of(
-            FieldValue.as("int", 12345),
-            FieldValue.as("string", "bob dylan"),
-            FieldValue.as("float", Float.MAX_VALUE),
-            FieldValue.as("double", Double.MAX_VALUE),
-            FieldValue.as("date", new Date())
-        );
+        Document document = new Document()
+            .addInt(new Field("int", 1), 12345)
+            .addString(new Field("string", 2), "bob dylan")
+            .addFloat(new Field("float", 3), Float.MAX_VALUE)
+            .addDateTime(new Field("datetime", 4), new Date());
 
-        Document document = new Document();
-        fields.forEach(document::add);
-        Document result = serializeAndThenBack(document);
-
-        Streams.zip(document.getFields().stream(), result.getFields().stream(),
-            (o, i) -> {
-                Truth.assertThat(o).isEqualTo(i);
-                return 0;
-            }
-        );
+        Truth.assertThat(serializeAndThenBack(document)).isEqualTo(document);
     }
 
     private Document serializeAndThenBack(Document document) throws Exception {

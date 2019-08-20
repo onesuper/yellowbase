@@ -27,7 +27,7 @@ public class ProtobufDocumentWriter implements BinarySerializable<Document> {
 
     private void writeFieldValue(FieldValue fieldValue) throws IOException {
 
-        out.writeStringNoTag(fieldValue.getField().getName());
+        out.writeSInt32NoTag(fieldValue.getFieldNumber());
         out.writeSInt32NoTag(fieldValue.getType().getCode());
 
         Object v = fieldValue.getValue();

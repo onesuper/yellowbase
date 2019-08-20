@@ -29,30 +29,30 @@ public class ProtobufDocumentReader implements BinaryDeserializable<Document> {
     }
 
     private FieldValue readFieldValue() throws IOException {
-        String name = in.readString();
+        int fieldNumber = in.readSInt32();
         int code = in.readSInt32();
-        Type t = Type.parseFromCode(code);
-        switch (t) {
+        switch (Type.parseFromCode(code)) {
 
             case INT:
-                return FieldValue.as(name, in.readSInt32());
+                return FieldValue.newInt(fieldNumber, in.readSInt32());
 
             case BIGINT:
-                return FieldValue.as(name, in.readSInt64());
+                return FieldValue.newBigInt(fieldNumber, in.readSInt64());
 
             case FLOAT:
-                return FieldValue.as(name, in.readFloat());
+                return FieldValue.newFloat(fieldNumber, in.readFloat());
 
             case DOUBLE:
-                return FieldValue.as(name, in.readDouble());
+                return FieldValue.newDouble(fieldNumber, in.readDouble());
 
             case DATETIME:
-                return FieldValue.as(name, new Date(in.readSInt64()));
+                return FieldValue.newDateTime(fieldNumber, new Date(in.readSInt64()));
 
             case STRING:
                 int size = in.readRawVarint32();
                 byte[] bytes = in.readRawBytes(size);
-                return FieldValue.as(name, new String(bytes, StandardCharsets.UTF_8));
+                String s = new String(bytes, StandardCharsets.UTF_8);
+                return FieldValue.newString(fieldNumber, s);
 
             default:
                 throw new IllegalArgumentException("Unresolved data type code: " + code);

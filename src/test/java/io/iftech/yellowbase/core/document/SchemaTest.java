@@ -1,33 +1,45 @@
 package io.iftech.yellowbase.core.document;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.common.truth.Truth;
-import io.iftech.yellowbase.core.document.Schema.SchemaBuilder;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import org.junit.Test;
 
 public class SchemaTest {
 
+    private Schema schema = Schema.builder()
+        .addIntField("int_1", 1, Options.DEFAULT)
+        .addFloatField("float_2", 2, Options.INDEXED)
+        .addDatetimeField("datetime_3", 3, Options.STORED)
+        .addBigIntField("bigint_4", 4,  Options.DEFAULT)
+        .addDatetimeField("datetime_5", 5, Options.DEFAULT)
+        .addDoubleField("double_6", 6 ,Options.DEFAULT)
+        .build();
+
     @Test
-    public void testSchemaBuildRightSchema() {
+    public void testGetField() {
+        Truth.assertThat(schema.getField("int_1").isPresent()).isTrue();
+        Truth.assertThat(schema.getField("int_1").get().getFieldNumber()).isEqualTo(1);
 
-        SchemaBuilder builder = Schema.builder()
-            .addIntField("int", Options.DEFAULT)
-            .addFloatField("float", Options.INDEXED)
-            .addDatetimeField("datetime", Options.STORED);
+        Truth.assertThat(schema.getField("float_2").isPresent()).isTrue();
+        Truth.assertThat(schema.getField("float_2").get().getFieldNumber()).isEqualTo(2);
 
-        Schema schema = builder.build();
-
-        FieldEntry f1 = schema.getFieldEntry("int").get();
-        Truth.assertThat(f1.getType()).isEqualTo(Type.INT);
-        Truth.assertThat(f1.getOptions().isIndexed()).isTrue();
-        Truth.assertThat(f1.getOptions().isStored()).isTrue();
-
-        FieldEntry f2 = schema.getFieldEntry("float").get();
-        Truth.assertThat(f2.getType()).isEqualTo(Type.FLOAT);
-        Truth.assertThat(f2.getOptions().isStored()).isFalse();
-
-        FieldEntry f3 = schema.getFieldEntry("datetime").get();
-        Truth.assertThat(f3.getOptions().isIndexed()).isFalse();
-        Truth.assertThat(f3.getType()).isEqualTo(Type.DATETIME);
+        Truth.assertThat(schema.getField("datetime_3").isPresent()).isTrue();
+        Truth.assertThat(schema.getField("datetime_3").get().getFieldNumber()).isEqualTo(3);
+        Truth.assertThat(schema.getField("datetime_33").isPresent()).isFalse();
     }
 
+    @Test
+    public void testPrettyJsonEqual() throws Exception {
+        InputStream is = this.getClass().getResourceAsStream("/schema.json");
+        String expect = CharStreams.toString(new InputStreamReader(is, Charsets.UTF_8));
+        Truth.assertThat(schema.toJson(true)).isEqualTo(expect);
+    }
+
+    @Test
+    public void testSerializeJsonThenBack() {
+        Truth.assertThat(Schema.fromJson(schema.toJson(false))).isEqualTo(schema);
+    }
 }
