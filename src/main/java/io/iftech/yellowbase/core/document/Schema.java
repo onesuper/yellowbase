@@ -34,33 +34,33 @@ public final class Schema {
         private SchemaBuilder() {
         }
 
-        public SchemaBuilder addStringField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.STRING, option));
+        public SchemaBuilder addStringField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.STRING, options));
             return this;
         }
 
-        public SchemaBuilder addFloatField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.FLOAT, option));
+        public SchemaBuilder addFloatField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.FLOAT, options));
             return this;
         }
 
-        public SchemaBuilder addDoubleField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.DOUBLE, option));
+        public SchemaBuilder addDoubleField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.DOUBLE, options));
             return this;
         }
 
-        public SchemaBuilder addDatetimeField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.DATETIME, option));
+        public SchemaBuilder addDatetimeField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.DATETIME, options));
             return this;
         }
 
-        public SchemaBuilder addIntField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.INT, option));
+        public SchemaBuilder addIntField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.INT, options));
             return this;
         }
 
-        public SchemaBuilder addBigIntField(String name, Option option) {
-            this.fields.add(new FieldEntry(name, Type.BIGINT, option));
+        public SchemaBuilder addBigIntField(String name, Options options) {
+            this.fields.add(new FieldEntry(name, Type.BIGINT, options));
             return this;
         }
 

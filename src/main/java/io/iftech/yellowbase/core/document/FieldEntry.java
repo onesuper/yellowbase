@@ -7,18 +7,18 @@ public class FieldEntry {
 
     private final Field field;
     private final Type type;
-    private final Option option;
+    private final Options options;
 
-    FieldEntry(Field field, Type type, Option option) {
+    FieldEntry(Field field, Type type, Options options) {
         this.field = field;
         this.type = type;
-        this.option = option;
+        this.options = options;
     }
 
-    FieldEntry(String name, Type type, Option option) {
+    FieldEntry(String name, Type type, Options options) {
         this.field = new Field(name);
         this.type = type;
-        this.option = option;
+        this.options = options;
     }
 
     public Field getField() {
@@ -29,8 +29,8 @@ public class FieldEntry {
         return type;
     }
 
-    public Option getOption() {
-        return option;
+    public Options getOptions() {
+        return options;
     }
 
     @Override
@@ -38,7 +38,7 @@ public class FieldEntry {
         return "FieldEntry{" +
             "field=" + field +
             ", type=" + type +
-            ", option=" + option +
+            ", options=" + options +
             '}';
     }
 }
