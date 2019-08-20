@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.util.Date;
 import org.junit.Test;
 
-public class ProtobufDocumentReaderWriterTest {
+public class ProtobufDocumentSerdeTest {
 
     private Schema schema = Schema.builder()
         .addIntField("string_0", 0, Options.DEFAULT)
@@ -58,12 +58,10 @@ public class ProtobufDocumentReaderWriterTest {
 
     private Document serializeAndThenBack(Document document) throws Exception {
         ByteArrayOutputStream boas = new ByteArrayOutputStream();
-        ProtobufDocumentWriter ser = new ProtobufDocumentWriter(boas);
-        ser.serialize(document);
-        ser.flush();
+        ProtobufDocumentSerde serde = new ProtobufDocumentSerde(document.getSchema());
+        serde.serialize(document, boas);
 
         InputStream is = new ByteArrayInputStream(boas.toByteArray());
-        ProtobufDocumentReader de = new ProtobufDocumentReader(document.getSchema(), is);
-        return de.deserialize();
+        return serde.deserialize(is);
     }
 }
