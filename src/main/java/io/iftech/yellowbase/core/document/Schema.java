@@ -78,32 +78,32 @@ public final class Schema {
         }
 
         public SchemaBuilder addStringField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.STRING, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.STRING, options));
             return this;
         }
 
         public SchemaBuilder addFloatField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.FLOAT, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.FLOAT, options));
             return this;
         }
 
         public SchemaBuilder addDoubleField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.DOUBLE, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.DOUBLE, options));
             return this;
         }
 
         public SchemaBuilder addDatetimeField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.DATETIME, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.DATETIME, options));
             return this;
         }
 
         public SchemaBuilder addIntField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.INT, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.INT, options));
             return this;
         }
 
         public SchemaBuilder addBigIntField(String name, int fieldNumber, Options options) {
-            this.fields.add(new FieldEntry(name, fieldNumber, Type.BIGINT, options));
+            this.fields.add(new FieldEntry(name, fieldNumber, FieldType.BIGINT, options));
             return this;
         }
 

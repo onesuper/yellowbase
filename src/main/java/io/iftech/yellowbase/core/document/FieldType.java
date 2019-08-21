@@ -4,7 +4,7 @@ import com.google.common.base.Preconditions;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Type {
+public enum FieldType {
     STRING(0),
     BIGINT(1),
     INT(2),
@@ -14,7 +14,7 @@ public enum Type {
 
     private int code;
 
-    Type(int code) {
+    FieldType(int code) {
         this.code = code;
     }
 
@@ -22,15 +22,15 @@ public enum Type {
         return code;
     }
 
-    static Map<Integer, Type> typeByCode = new HashMap<>();
+    static Map<Integer, FieldType> typeByCode = new HashMap<>();
     static {
-        for (Type t : Type.values()) {
+        for (FieldType t : FieldType.values()) {
             typeByCode.put(t.code, t);
         }
     }
-    public static Type parseFromCode(int code) {
+    public static FieldType parseFromCode(int code) {
         Preconditions.checkState(typeByCode.containsKey(code),
-            "Type code unmatched: " + code);
+            "FieldType code unmatched: " + code);
         return typeByCode.get(code);
     }
 }

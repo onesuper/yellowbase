@@ -3,9 +3,9 @@ package io.iftech.yellowbase.core.serde.proto;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import io.iftech.yellowbase.core.document.Document;
+import io.iftech.yellowbase.core.document.FieldType;
 import io.iftech.yellowbase.core.document.FieldValue;
 import io.iftech.yellowbase.core.document.Schema;
-import io.iftech.yellowbase.core.document.Type;
 import io.iftech.yellowbase.core.serde.BinarySerializable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,7 +45,7 @@ public class ProtobufDocumentSerializer implements BinarySerializable<Document> 
     private FieldValue readFieldValue(CodedInputStream in) throws IOException {
         int fieldNumber = in.readSInt32();
         int code = in.readSInt32();
-        switch (Type.parseFromCode(code)) {
+        switch (FieldType.parseFromCode(code)) {
 
             case INT:
                 return FieldValue.newInt(fieldNumber, in.readSInt32());
@@ -76,11 +76,11 @@ public class ProtobufDocumentSerializer implements BinarySerializable<Document> 
     private void writeFieldValue(CodedOutputStream out, FieldValue fieldValue) throws IOException {
 
         out.writeSInt32NoTag(fieldValue.getFieldNumber());
-        out.writeSInt32NoTag(fieldValue.getType().getCode());
+        out.writeSInt32NoTag(fieldValue.getFieldType().getCode());
 
         Object v = fieldValue.getValue();
 
-        switch (fieldValue.getType()) {
+        switch (fieldValue.getFieldType()) {
             case INT:
                 out.writeSInt32NoTag((Integer) v);
                 break;
@@ -110,7 +110,7 @@ public class ProtobufDocumentSerializer implements BinarySerializable<Document> 
                 out.writeRawBytes(bytes);
                 break;
             default:
-                throw new IllegalArgumentException("Unresolved data type: " + fieldValue.getType());
+                throw new IllegalArgumentException("Unresolved data type: " + fieldValue.getFieldType());
         }
     }
 }

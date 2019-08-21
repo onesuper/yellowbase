@@ -14,14 +14,14 @@ public class FieldEntry {
     @Expose
     private final int fieldNumber;
     @Expose
-    private final Type type;
+    private final FieldType fieldType;
     @Expose
     private final Options options;
 
-    FieldEntry(String name, int fieldNumber, Type type, Options options) {
+    FieldEntry(String name, int fieldNumber, FieldType fieldType, Options options) {
         this.name = Preconditions.checkNotNull(name);
         this.fieldNumber = fieldNumber;
-        this.type = Preconditions.checkNotNull(type);
+        this.fieldType = Preconditions.checkNotNull(fieldType);
         this.options = Preconditions.checkNotNull(options);
     }
 
@@ -33,8 +33,8 @@ public class FieldEntry {
         return fieldNumber;
     }
 
-    public Type getType() {
-        return type;
+    public FieldType getFieldType() {
+        return fieldType;
     }
 
     public Options getOptions() {
@@ -46,7 +46,7 @@ public class FieldEntry {
         return "FieldEntry{" +
             "name='" + name + '\'' +
             ", fieldNumber=" + fieldNumber +
-            ", type=" + type +
+            ", fieldType=" + fieldType +
             ", options=" + options +
             '}';
     }
@@ -62,12 +62,12 @@ public class FieldEntry {
         FieldEntry that = (FieldEntry) o;
         return fieldNumber == that.fieldNumber &&
             name.equals(that.name) &&
-            type == that.type &&
+            fieldType == that.fieldType &&
             options.equals(that.options);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, fieldNumber, type, options);
+        return Objects.hash(name, fieldNumber, fieldType, options);
     }
 }

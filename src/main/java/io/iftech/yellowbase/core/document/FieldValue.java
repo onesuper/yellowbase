@@ -7,45 +7,45 @@ import java.util.Objects;
 public class FieldValue {
 
     private int fieldNumber;
-    private Type type;
+    private FieldType fieldType;
     private Object value;
 
-    FieldValue(int fieldNumber, Type type, Object value) {
+    FieldValue(int fieldNumber, FieldType fieldType, Object value) {
         this.fieldNumber = fieldNumber;
-        this.type = Preconditions.checkNotNull(type);
+        this.fieldType = Preconditions.checkNotNull(fieldType);
         this.value = Preconditions.checkNotNull(value);
     }
 
     public static FieldValue newInt(int fieldNumber, int value) {
-        return new FieldValue(fieldNumber, Type.INT, value);
+        return new FieldValue(fieldNumber, FieldType.INT, value);
     }
 
     public static FieldValue newBigInt(int fieldNumber, long value) {
-        return new FieldValue(fieldNumber, Type.BIGINT, value);
+        return new FieldValue(fieldNumber, FieldType.BIGINT, value);
     }
 
     public static FieldValue newFloat(int fieldNumber, float value) {
-        return new FieldValue(fieldNumber, Type.FLOAT, value);
+        return new FieldValue(fieldNumber, FieldType.FLOAT, value);
     }
 
     public static FieldValue newDouble(int fieldNumber, double value) {
-        return new FieldValue(fieldNumber, Type.DOUBLE, value);
+        return new FieldValue(fieldNumber, FieldType.DOUBLE, value);
     }
 
     public static FieldValue newString(int fieldNumber, String value) {
-        return new FieldValue(fieldNumber, Type.STRING, value);
+        return new FieldValue(fieldNumber, FieldType.STRING, value);
     }
 
     public static FieldValue newDateTime(int fieldNumber, Date value) {
-        return new FieldValue(fieldNumber, Type.DATETIME, value);
+        return new FieldValue(fieldNumber, FieldType.DATETIME, value);
     }
 
     public int getFieldNumber() {
         return fieldNumber;
     }
 
-    public Type getType() {
-        return type;
+    public FieldType getFieldType() {
+        return fieldType;
     }
 
     public Object getValue() {
@@ -56,7 +56,7 @@ public class FieldValue {
     public String toString() {
         return "FieldValue{" +
             "fieldNumber=" + fieldNumber +
-            ", type=" + type +
+            ", fieldType=" + fieldType +
             ", value=" + value +
             '}';
     }
@@ -71,12 +71,12 @@ public class FieldValue {
         }
         FieldValue that = (FieldValue) o;
         return fieldNumber == that.fieldNumber &&
-            type == that.type &&
+            fieldType == that.fieldType &&
             value.equals(that.value);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(fieldNumber, type, value);
+        return Objects.hash(fieldNumber, fieldType, value);
     }
 }
