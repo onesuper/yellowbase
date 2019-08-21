@@ -13,11 +13,11 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-public class ProtobufDocumentSerializable implements BinarySerializable<Document> {
+public class ProtobufDocumentSerializer implements BinarySerializable<Document> {
 
     private Schema schema;
 
-    public ProtobufDocumentSerializable(Schema schema) {
+    public ProtobufDocumentSerializer(Schema schema) {
         this.schema = schema;
     }
 
