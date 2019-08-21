@@ -4,17 +4,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class RAMTermIndex<TermKey, TermId> implements TermIndex<TermKey, TermId> {
+public class RAMTermIndex implements TermIndex<byte[], Integer> {
 
-    Map<TermKey, TermId> termIdByKey = new HashMap<>();
+    Map<byte[], Integer> termIdByKey = new HashMap<>();
 
     @Override
-    public Optional<TermId> get(TermKey key) {
+    public Optional<Integer> get(byte[] key) {
         return Optional.ofNullable(termIdByKey.get(key));
     }
 
     @Override
-    public void insert(TermKey key, TermId termId) {
+    public void insert(byte[] key, Integer termId) {
         termIdByKey.put(key, termId);
     }
 }
