@@ -75,12 +75,12 @@ public class ProtobufDocumentSerializer implements BinarySerializable<Document> 
 
     private void writeFieldValue(CodedOutputStream out, FieldValue fieldValue) throws IOException {
 
-        out.writeSInt32NoTag(fieldValue.getFieldNumber());
-        out.writeSInt32NoTag(fieldValue.getFieldType().getCode());
+        out.writeSInt32NoTag(fieldValue.fieldNumber);
+        out.writeSInt32NoTag(fieldValue.fieldType.getCode());
 
-        Object v = fieldValue.getValue();
+        Object v = fieldValue.value;
 
-        switch (fieldValue.getFieldType()) {
+        switch (fieldValue.fieldType) {
             case INT:
                 out.writeSInt32NoTag((Integer) v);
                 break;
@@ -110,7 +110,7 @@ public class ProtobufDocumentSerializer implements BinarySerializable<Document> 
                 out.writeRawBytes(bytes);
                 break;
             default:
-                throw new IllegalArgumentException("Unresolved data type: " + fieldValue.getFieldType());
+                throw new IllegalArgumentException("Unresolved data type: " + fieldValue.fieldType);
         }
     }
 }

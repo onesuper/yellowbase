@@ -6,7 +6,7 @@ import org.junit.Test;
 public class ProtobufSkipListReaderWriterTest {
 
     @Test
-    public void testSkip() throws Exception {
+    public void writeSkipListThenReadSuccessfully() throws Exception {
         ProtobufSkipListWriter writer = new ProtobufSkipListWriter();
 
         writer.writeDoc(1);

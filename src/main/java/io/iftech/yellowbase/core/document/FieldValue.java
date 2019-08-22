@@ -6,9 +6,9 @@ import java.util.Objects;
 
 public class FieldValue {
 
-    private int fieldNumber;
-    private FieldType fieldType;
-    private Object value;
+    public int fieldNumber;
+    public FieldType fieldType;
+    public Object value;
 
     FieldValue(int fieldNumber, FieldType fieldType, Object value) {
         this.fieldNumber = fieldNumber;
@@ -38,18 +38,6 @@ public class FieldValue {
 
     public static FieldValue newDateTime(int fieldNumber, Date value) {
         return new FieldValue(fieldNumber, FieldType.DATETIME, value);
-    }
-
-    public int getFieldNumber() {
-        return fieldNumber;
-    }
-
-    public FieldType getFieldType() {
-        return fieldType;
-    }
-
-    public Object getValue() {
-        return value;
     }
 
     @Override

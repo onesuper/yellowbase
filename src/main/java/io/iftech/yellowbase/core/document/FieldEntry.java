@@ -5,40 +5,24 @@ import com.google.gson.annotations.Expose;
 import java.util.Objects;
 
 /**
- * FieldEntry 中记录了字段的类型和索引信息
+ * FieldEntry records the type and index information of all fields in schema
  */
 public class FieldEntry {
 
     @Expose
-    private final String name;
+    public final String name;
     @Expose
-    private final int fieldNumber;
+    public final int fieldNumber;
     @Expose
-    private final FieldType fieldType;
+    public final FieldType fieldType;
     @Expose
-    private final Options options;
+    public final Options options;
 
     FieldEntry(String name, int fieldNumber, FieldType fieldType, Options options) {
         this.name = Preconditions.checkNotNull(name);
         this.fieldNumber = fieldNumber;
         this.fieldType = Preconditions.checkNotNull(fieldType);
         this.options = Preconditions.checkNotNull(options);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public int getFieldNumber() {
-        return fieldNumber;
-    }
-
-    public FieldType getFieldType() {
-        return fieldType;
-    }
-
-    public Options getOptions() {
-        return options;
     }
 
     @Override

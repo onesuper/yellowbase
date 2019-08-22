@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public class RAMTermIndex implements TermIndex<byte[], Integer> {
 
-    Map<byte[], Integer> termIdByKey = new HashMap<>();
+    private Map<byte[], Integer> termIdByKey = new HashMap<>();
 
     @Override
     public Optional<Integer> get(byte[] key) {

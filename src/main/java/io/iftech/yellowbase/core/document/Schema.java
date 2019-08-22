@@ -23,14 +23,14 @@ public final class Schema {
     Schema(List<FieldEntry> fields) {
         this.fields = fields;
         this.fieldsByName = fields.stream().collect(
-            Collectors.toMap(FieldEntry::getName, this::makeField));
+            Collectors.toMap(f -> f.name, this::makeField));
 
         this.fieldsByNumber = fields.stream().collect(
-            Collectors.toMap(FieldEntry::getFieldNumber, this::makeField));
+            Collectors.toMap(f -> f.fieldNumber, this::makeField));
     }
 
     private Field makeField(FieldEntry fieldEntry) {
-        return new Field(fieldEntry.getName(), fieldEntry.getFieldNumber());
+        return new Field(fieldEntry.name, fieldEntry.fieldNumber);
     }
 
     public Optional<Field> getOptField(String name) {

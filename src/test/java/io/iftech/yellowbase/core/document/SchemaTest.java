@@ -21,9 +21,9 @@ public class SchemaTest {
 
     @Test
     public void testGetField() {
-        Truth.assertThat(schema.getField("int_1").getFieldNumber()).isEqualTo(1);
-        Truth.assertThat(schema.getField("float_2").getFieldNumber()).isEqualTo(2);
-        Truth.assertThat(schema.getField("datetime_3").getFieldNumber()).isEqualTo(3);
+        Truth.assertThat(schema.getField("int_1").fieldNumber).isEqualTo(1);
+        Truth.assertThat(schema.getField("float_2").fieldNumber).isEqualTo(2);
+        Truth.assertThat(schema.getField("datetime_3").fieldNumber).isEqualTo(3);
     }
 
     @Test

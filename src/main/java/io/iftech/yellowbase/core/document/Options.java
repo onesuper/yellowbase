@@ -12,21 +12,13 @@ public final class Options {
     public static Options INDEXED = new Options(false, true);
 
     @Expose
-    private boolean stored;
+    public boolean stored;
     @Expose
-    private boolean indexed;
+    public boolean indexed;
 
     private Options(boolean stored, boolean indexed) {
         this.stored = stored;
         this.indexed = indexed;
-    }
-
-    public boolean isStored() {
-        return stored;
-    }
-
-    public boolean isIndexed() {
-        return indexed;
     }
 
     @Override
