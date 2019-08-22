@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,9 +28,8 @@ public final class IndexWriter implements Indexable {
     private static final int MAX_PENDING_DOCUMENTS = 1_000;
 
     /**
-     * 单个线程内存中 segment 大小超过 MAX_HEAP_SIZE_IN_BYTES 时会进行持久化到外存
-     *
-     * 默认大小 3 MB
+     * The the memory size of a segment exceeds MAX_HEAP_SIZE_IN_BYTES, it will be persisted
+     * to disk
      */
     private static final int MAX_HEAP_SIZE_IN_BYTES = 3_000_000;
 
@@ -41,9 +39,8 @@ public final class IndexWriter implements Indexable {
     private SegmentUpdater segmentUpdater;
     private SegmentRepository segmentRepository;
 
-    // 使用 commitVersion 区分每轮 commit 的 index worker
-    // 当工作队列为空且 commitVersion > workerVersion 时，表示 worker 完成了这一轮的 commit
-    private AtomicInteger commitVersion = new AtomicInteger();
+    // The main thread use this flag to coordinate the index threads to finish commit
+    private volatile boolean isCommit;
 
     // Per Thread memory budget
     private int memoryBudget;
@@ -68,7 +65,8 @@ public final class IndexWriter implements Indexable {
                 new ThreadFactoryBuilder().setNameFormat("yellowbase-index-%d").build()));
 
         this.indexingQueue = new ArrayBlockingQueue<>(indexQueueSize);
-        this.startIndexWorkers();
+        isCommit = false;
+        startIndexWorkers();
     }
 
     public void setPostIndexHandler(Consumer<Document> postIndexHandler) {
@@ -81,7 +79,7 @@ public final class IndexWriter implements Indexable {
     @Override
     public void addDocument(Document document) {
         try {
-            this.indexingQueue.put(document);
+            indexingQueue.put(document);
         } catch (InterruptedException ex) {
             throw new RuntimeException("Fail to insert document", ex);
         }
@@ -113,43 +111,45 @@ public final class IndexWriter implements Indexable {
             numDocs, segment.id());
     }
 
-    // The infinite index worker loop
-    // reads documents from queue and collect them into segmentUpdater
+    // The infinite index worker loop reads documents from queue
+    // and collect them into segmentUpdater
     private void startIndexWorkers() {
         Runnable workerLoop = () -> {
-            int workerVersion = this.commitVersion.get();
             while (true) {
                 List<Document> documentsToBeIndexed = new ArrayList<>();
-                this.indexingQueue.drainTo(documentsToBeIndexed);
+                indexingQueue.drainTo(documentsToBeIndexed);
 
+                // NOTE: Is it strong enough to say the queue has no data?
                 if (documentsToBeIndexed.size() > 0) {
                     Segment segment = index.newSegment();
                     indexDocuments(segment, documentsToBeIndexed);
                 } else {
-                    if (this.commitVersion.get() > workerVersion) {
+                    if (isCommit) {
                         return;
                     }
                 }
             }
         };
-        this.indexWorkers.spawn(workerLoop, numThreads);
+        indexWorkers.spawn(workerLoop, numThreads);
     }
 
     /**
-     * commit 是一个阻塞接口
+     * All documents added before commit() operation is ensured to be persisted and searchable
      *
-     * 在 commit() 操作前增加的文档会将确保会被持久化，且能被搜索到
+     * NOTE: commit() is s blocking call
      *
      * @throws IOException
      */
     public void commit() throws IOException {
-        commitVersion.incrementAndGet();
+        isCommit = true;
         try {
-            this.indexWorkers.join();
+            indexWorkers.join();
         } catch (Exception ex) {
             throw new IOException(ex);
         }
-        this.segmentUpdater.commit();
-        this.startIndexWorkers();
+        segmentUpdater.commit();
+        isCommit = false;
+
+        startIndexWorkers();
     }
 }
