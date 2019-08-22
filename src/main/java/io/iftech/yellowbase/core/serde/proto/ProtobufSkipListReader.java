@@ -1,16 +1,16 @@
 package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.protobuf.CodedInputStream;
-import io.iftech.yellowbase.core.postings.SkipReader;
+import io.iftech.yellowbase.core.postings.SkipListReader;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
-public final class ProtobufSkipReader implements SkipReader<Integer> {
+public final class ProtobufSkipListReader implements SkipListReader<Integer> {
 
     private CodedInputStream in;
     private int docId;
 
-    public ProtobufSkipReader(byte[] data) {
+    public ProtobufSkipListReader(byte[] data) {
         this.in = CodedInputStream.newInstance(new ByteArrayInputStream(data));
         this.docId = 0;
     }

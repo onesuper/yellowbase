@@ -3,11 +3,11 @@ package io.iftech.yellowbase.core.serde.proto;
 import com.google.common.truth.Truth;
 import org.junit.Test;
 
-public class ProtobufSkipReaderWriterTest {
+public class ProtobufSkipListReaderWriterTest {
 
     @Test
     public void testSkip() throws Exception {
-        ProtobufSkipWriter writer = new ProtobufSkipWriter();
+        ProtobufSkipListWriter writer = new ProtobufSkipListWriter();
 
         writer.writeDoc(1);
         writer.writeDoc(5);
@@ -15,7 +15,7 @@ public class ProtobufSkipReaderWriterTest {
 
         byte[] data = writer.getBytes();
 
-        ProtobufSkipReader reader = new ProtobufSkipReader(data);
+        ProtobufSkipListReader reader = new ProtobufSkipListReader(data);
 
         Truth.assertThat(reader.next()).isTrue();
         Truth.assertThat(reader.docId()).isEqualTo(1);

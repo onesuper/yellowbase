@@ -2,7 +2,7 @@ package io.iftech.yellowbase.core.postings;
 
 import java.io.IOException;
 
-public interface SkipWriter<DocId> {
+public interface SkipListWriter<DocId> {
 
     void writeDoc(DocId docId) throws IOException;
 

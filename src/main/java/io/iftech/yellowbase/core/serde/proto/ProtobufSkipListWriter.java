@@ -2,17 +2,17 @@ package io.iftech.yellowbase.core.serde.proto;
 
 import com.google.common.base.Preconditions;
 import com.google.protobuf.CodedOutputStream;
-import io.iftech.yellowbase.core.postings.SkipWriter;
+import io.iftech.yellowbase.core.postings.SkipListWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public final class ProtobufSkipWriter implements SkipWriter<Integer> {
+public final class ProtobufSkipListWriter implements SkipListWriter<Integer> {
 
     private ByteArrayOutputStream buffer;
     private CodedOutputStream out;
     private int previousDocId;
 
-    public ProtobufSkipWriter() {
+    public ProtobufSkipListWriter() {
         this.buffer = new ByteArrayOutputStream();
         this.out = CodedOutputStream.newInstance(this.buffer);
         this.previousDocId = 0;
