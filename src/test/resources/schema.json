@@ -3,7 +3,7 @@
     {
       "name": "int_1",
       "fieldNumber": 1,
-      "type": "INT",
+      "fieldType": "INT",
       "options": {
         "stored": true,
         "indexed": true
@@ -12,7 +12,7 @@
     {
       "name": "float_2",
       "fieldNumber": 2,
-      "type": "FLOAT",
+      "fieldType": "FLOAT",
       "options": {
         "stored": false,
         "indexed": true
@@ -21,7 +21,7 @@
     {
       "name": "datetime_3",
       "fieldNumber": 3,
-      "type": "DATETIME",
+      "fieldType": "DATETIME",
       "options": {
         "stored": true,
         "indexed": false
@@ -30,7 +30,7 @@
     {
       "name": "bigint_4",
       "fieldNumber": 4,
-      "type": "BIGINT",
+      "fieldType": "BIGINT",
       "options": {
         "stored": true,
         "indexed": true
@@ -39,7 +39,7 @@
     {
       "name": "datetime_5",
       "fieldNumber": 5,
-      "type": "DATETIME",
+      "fieldType": "DATETIME",
       "options": {
         "stored": true,
         "indexed": true
@@ -48,7 +48,7 @@
     {
       "name": "double_6",
       "fieldNumber": 6,
-      "type": "DOUBLE",
+      "fieldType": "DOUBLE",
       "options": {
         "stored": true,
         "indexed": true
