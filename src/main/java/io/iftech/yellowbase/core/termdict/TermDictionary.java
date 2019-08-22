@@ -20,7 +20,7 @@ public final class TermDictionary {
         this.termId = 0;
     }
 
-    public void insert(byte[] key, TermInfo termInfo) {
+    public void insertTerm(byte[] key, TermInfo termInfo) {
         this.termIndex.insert(key, termId);
         this.termInfoRepository.add(termInfo);
         termId += 1;
