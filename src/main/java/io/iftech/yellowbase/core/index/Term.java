@@ -1,5 +1,6 @@
 package io.iftech.yellowbase.core.index;
 
+import io.iftech.yellowbase.core.common.BytesRef;
 import java.util.Objects;
 import org.jetbrains.annotations.NotNull;
 
@@ -7,11 +8,11 @@ public final class Term implements Comparable<Term> {
 
     private final String field;
 
-    private final String value;
+    private final BytesRef value;
 
     public Term(String field, String value) {
         this.field = field;
-        this.value = value;
+        this.value = new BytesRef(value);
     }
 
     @Override
