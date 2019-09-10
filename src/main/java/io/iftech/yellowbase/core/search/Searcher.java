@@ -27,15 +27,6 @@ public final class Searcher implements Searchable {
         this.collectorReducer = new TopicDocsCollectorReducer<>();
     }
 
-    /**
-     * 搜索过程
-     *
-     * 1. 为每个 segment 分配一个 {@link Collector}，用来收集文档
-     * 2. 每个 segment 都创建一个 {@link Scorer}
-     * 3. 将每个命中的文档加入对应的 {@link Collector} 中
-     *
-     * 以上过程将用线程池并发执行，最终将合并为一个 TopDocs
-     */
     @Override
     public SearchResult search(Query query) {
         MapExecutor executor = index.searchExecutor();
@@ -43,6 +34,16 @@ public final class Searcher implements Searchable {
         return new SearchResult(reducedTopDocs.totalHits, reducedTopDocs.scoreDocs);
     }
 
+    /**
+     * The search process will be executed concurrently using a thread pool.
+     *
+     * 1. Assign each segment a {@link Collector} to collect documents.
+     *
+     * 2. Create a {@link Scorer} for each segment using {@link Weight}.
+     *
+     * 3. Add the matching docs to its corresponding {@link Collector}. All the collectors are
+     *    reduced into a {@link TopDocs} using a {@link CollectorReducer}.
+     */
     private <C extends Collector<Integer>, T> T searchWithExecutor(Query query,
         CollectorReducer<C, T> collectorReducer, MapExecutor executor) {
 
