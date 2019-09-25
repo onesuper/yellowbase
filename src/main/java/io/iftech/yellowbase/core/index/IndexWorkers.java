@@ -7,13 +7,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public final class AsyncWorkers {
+public final class IndexWorkers {
 
     private final ExecutorService executor;
 
     private List<CompletableFuture<Void>> futureHandles;
 
-    public AsyncWorkers(ExecutorService executor) {
+    public IndexWorkers(ExecutorService executor) {
         this.executor = executor;
     }
 

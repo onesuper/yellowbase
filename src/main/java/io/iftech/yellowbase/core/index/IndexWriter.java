@@ -45,7 +45,7 @@ public final class IndexWriter implements Indexable {
     // Per Thread memory budget
     private int memoryBudget;
     private int numThreads;
-    private AsyncWorkers indexWorkers;
+    private IndexWorkers indexWorkers;
     private Consumer<Document> postIndexHandler = null;
 
     public static IndexWriter newInstance(Index index, int numThreads) {
@@ -60,7 +60,7 @@ public final class IndexWriter implements Indexable {
         this.memoryBudget = memoryBudget;
         this.segmentRepository = index.getSegmentRepository();
         this.segmentUpdater = new SegmentUpdater(index);
-        this.indexWorkers = new AsyncWorkers(
+        this.indexWorkers = new IndexWorkers(
             Executors.newCachedThreadPool(
                 new ThreadFactoryBuilder().setNameFormat("yellowbase-index-%d").build()));
 
