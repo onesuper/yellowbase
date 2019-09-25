@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.functional;
+package io.iftech.yellowbase.core.common;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;

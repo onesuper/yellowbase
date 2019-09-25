@@ -1,7 +1,7 @@
 package io.iftech.yellowbase.core.index;
 
 import io.iftech.yellowbase.core.SegmentMeta;
-import io.iftech.yellowbase.core.functional.RwLockGuard;
+import io.iftech.yellowbase.core.common.RwLockGuard;
 import java.util.ArrayList;
 import java.util.List;
 

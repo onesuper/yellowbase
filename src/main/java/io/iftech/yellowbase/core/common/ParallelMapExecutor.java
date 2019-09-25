@@ -1,4 +1,4 @@
-package io.iftech.yellowbase.core.functional;
+package io.iftech.yellowbase.core.common;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -8,7 +8,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 
-public final class ParallelMapExecutor implements MapExecutor {
+public final class ParallelMapExecutor<I, R>  implements MapExecutor<I, R>  {
 
     private final ExecutorService executor;
 
@@ -17,7 +17,7 @@ public final class ParallelMapExecutor implements MapExecutor {
     }
 
     @Override
-    public <I, R> List<R> map(Function<I, R> f, Iterable<I> is) {
+    public List<R> map(Function<I, R> f, Iterable<I> is) {
 
         final List<Future<R>> resultFutures = new LinkedList<>();
         for (I i : is) {
