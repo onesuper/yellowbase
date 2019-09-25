@@ -1,7 +1,6 @@
-package io.iftech.yellowbase.core.functional;
+package io.iftech.yellowbase.core.common;
 
 import com.google.common.truth.Truth;
-import io.iftech.yellowbase.core.common.RwLockGuard;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;

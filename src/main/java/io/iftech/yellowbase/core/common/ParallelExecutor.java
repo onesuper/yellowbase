@@ -8,16 +8,16 @@ import java.util.concurrent.Future;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 
-public final class ParallelMapExecutor<I, R>  implements MapExecutor<I, R>  {
+public final class ParallelExecutor implements Executor {
 
     private final ExecutorService executor;
 
-    public ParallelMapExecutor(ExecutorService executor) {
+    public ParallelExecutor(ExecutorService executor) {
         this.executor = executor;
     }
 
     @Override
-    public List<R> map(Function<I, R> f, Iterable<I> is) {
+    public <I, R> List<R> map(Function<I, R> f, Iterable<I> is) {
 
         final List<Future<R>> resultFutures = new LinkedList<>();
         for (I i : is) {

@@ -3,9 +3,9 @@ package io.iftech.yellowbase.core;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
-import io.iftech.yellowbase.core.collect.TopDocsCollector;
-import io.iftech.yellowbase.core.common.MapExecutor;
-import io.iftech.yellowbase.core.common.ParallelMapExecutor;
+import io.iftech.yellowbase.core.common.DirectExecutor;
+import io.iftech.yellowbase.core.common.Executor;
+import io.iftech.yellowbase.core.common.ParallelExecutor;
 import io.iftech.yellowbase.core.index.IndexWriter;
 import io.iftech.yellowbase.core.query.Query;
 import io.iftech.yellowbase.core.repository.IndexMetaRepository;
@@ -13,27 +13,18 @@ import io.iftech.yellowbase.core.repository.RAMIndexMetaRepository;
 import io.iftech.yellowbase.core.repository.RAMSegmentRepository;
 import io.iftech.yellowbase.core.repository.SegmentRepository;
 import io.iftech.yellowbase.core.search.Searcher;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class Index {
 
-    private MapExecutor<SegmentReader, TopDocsCollector<Integer>> searchExecutor;
+    private Executor searchExecutor;
     private IndexMetaRepository indexMetaRepository;
     private SegmentRepository segmentRepository;
 
     private Index(IndexMetaRepository indexMetaRepository, SegmentRepository segmentRepository) {
-
-        this.searchExecutor = (f, is) -> {
-            List<TopDocsCollector<Integer>> result = new ArrayList<>();
-            for (SegmentReader i : is) {
-                result.add(f.apply(i));
-            }
-            return result;
-        };
-
+        this.searchExecutor = new DirectExecutor();
         this.indexMetaRepository = indexMetaRepository;
         this.segmentRepository = segmentRepository;
     }
@@ -90,9 +81,9 @@ public class Index {
      *
      * 默认不使用线程池，在调用线程中执行
      *
-     * @return {@link MapExecutor}
+     * @return {@link Executor}
      */
-    public MapExecutor<SegmentReader, TopDocsCollector<Integer>> searchExecutor() {
+    public Executor searchExecutor() {
         return searchExecutor;
     }
 
@@ -107,7 +98,7 @@ public class Index {
     // Setters
 
     public void setSearchThreads(int n) {
-        this.searchExecutor = new ParallelMapExecutor<>(Executors.newFixedThreadPool(n,
+        this.searchExecutor = new ParallelExecutor(Executors.newFixedThreadPool(n,
             new ThreadFactoryBuilder().setNameFormat("yellowbase-search-%d").build()));
     }
 
