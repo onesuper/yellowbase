@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.function.Consumer;
 
-public class RwLockGuard<T> implements RwLockReadGuard<T>, RwLockWriteGuard<T>{
+public final class RwLockGuard<T> {
 
     private final Lock readLock;
     private final Lock writeLock;
@@ -21,7 +21,6 @@ public class RwLockGuard<T> implements RwLockReadGuard<T>, RwLockWriteGuard<T>{
         writeLock = lock.writeLock();
     }
 
-    @Override
     public void read(Consumer<T> callback) {
         readLock.lock();
         try {
@@ -31,7 +30,6 @@ public class RwLockGuard<T> implements RwLockReadGuard<T>, RwLockWriteGuard<T>{
         }
     }
 
-    @Override
     public void write(Consumer<T> callback) {
         writeLock.lock();
         try {
