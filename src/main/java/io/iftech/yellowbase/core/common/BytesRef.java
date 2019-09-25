@@ -17,6 +17,12 @@ public final class BytesRef implements Comparable<BytesRef>, Cloneable {
 
     public int offset;
 
+    public BytesRef() {
+        this.bytes = EMTPY_BYTES;
+        this.offset = 0;
+        this.length = 0;
+    }
+
     public BytesRef(byte[] bytes, int offset, int length) {
         Preconditions.checkState(length >= 0,
             "length is negative");
